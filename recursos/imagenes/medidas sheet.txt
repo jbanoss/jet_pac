@@ -14,3 +14,10 @@ marcianos5 - 16x8 - 112,121
 marcianos6 - 15x15 - 128,121
 marcianos7 - 16x14 - 0,193
 marcianos8 - 16x14 - 0,207
+
+Posicion plataformas
+
+suelo - a 8 del suelo
+plat izq - 32,72 - 48x8
+plat med - 120,96 - 32x8
+plat der - 192,48 - 48x8

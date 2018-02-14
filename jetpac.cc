@@ -14,7 +14,7 @@ esat::SpriteTransform stMap;
 
 struct object{
 	int speed,direccion;
-	bool shoot; 
+	bool shoot, fly; 
 	esat::SpriteHandle *sprite;
 	esat::SpriteTransform st;
 };
@@ -136,6 +136,9 @@ void PlayerAll(){
 
 /*----------------------*/
 
+/*--------Enemies-------*/
+
+/*----------------------*/
 
 int esat::main(int argc, char **argv) {
  

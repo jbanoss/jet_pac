@@ -9,10 +9,6 @@
 const int sc=3, wX=256*sc, wY=192*sc;
 
 esat::SpriteHandle sheet;
-<<<<<<< HEAD
-sheet=esat::SpriteFromFile("./recursos/imagenes/sheet.png");
-=======
->>>>>>> 284edb2e42c0d82b0b9a77d73c75e9199ca4b129
 
 struct object{
 	int speed,direccion;
@@ -26,17 +22,7 @@ void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
 }
 
-<<<<<<< HEAD
-void MapSprites(){
-
-  *(map.sprite+0)=esat::SubSprite(mapsheet,31,73,48,8);
-  *(map.sprite+1)=esat::SubSprite(mapsheet,119,97,32,8);
-  *(map.sprite+2)=esat::SubSprite(mapsheet,191,49,48,8);
-  *(map.sprite+3)=esat::SubSprite(mapsheet,0,185,255,6);
-}
-=======
 /*--------Map-----------*/
->>>>>>> 284edb2e42c0d82b0b9a77d73c75e9199ca4b129
 
 
 

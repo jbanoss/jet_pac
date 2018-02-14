@@ -15,7 +15,7 @@ esat::SpriteTransform stMap;
 
 struct object{
 	int speed,direccion;
-	bool shoot, fly; 
+	bool shoot, fly, inFloor; 
 	esat::SpriteHandle *sprite;
 	esat::SpriteTransform st;
 };
@@ -103,6 +103,7 @@ void InitPlayer(){
   player.direccion=0;
 	player.shoot=false;
   player.fly=false;
+  player.inFloor=false;
 	player.sprite=(esat::SpriteHandle*)malloc(16*sizeof(esat::SpriteHandle));
   
 
@@ -120,24 +121,38 @@ void PlayerSprites(){
 void PlayerControls(){
 		if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
 			//player.shoot=true;
-			Disparar();
+			//Disparar();
 		}
-		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up) && player.st.y>=(wY*0.15)){
+		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
 			player.st.y-=player.speed;
       player.fly=true;
 		}else{
 			player.st.y+=3;
       player.fly=false;
 		}
+    if(player.st.y<16*sc){
+      player.st.y=16*sc;
+    }
+    if(player.st.y+esat::SpriteHeight(*(player.sprite+0))>184*sc){
+      player.st.y=184*sc-esat::SpriteHeight(*(player.sprite+0));
+      player.inFloor=true;
+    }else{
+      player.inFloor=false;
+    }
+      
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
 			player.st.x-=player.speed;
       player.direccion=0;      
-      ++an%=4;
+      if(player.inFloor){
+        ++an%=4;
+      }
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
 			player.st.x+=player.speed;
       player.direccion=1;
-      ++an%=4;
+      if(player.inFloor){
+        ++an%=4;
+      }
 		}
 		
 	if(player.st.x+esat::SpriteWidth(*(player.sprite+0))<0){
@@ -150,19 +165,22 @@ void PlayerControls(){
 
 void DrawPlayer(){
   if(player.direccion==0 && !player.fly){
-      esat::DrawSprite(*(player.sprite+an),player.st);
-
+    esat::DrawSprite(*(player.sprite+an),player.st);
   }
   if(player.direccion==0 && player.fly){
-      esat::DrawSprite(*(player.sprite+(an+8)),player.st);
+    esat::DrawSprite(*(player.sprite+(an+8)),player.st);
   }
   
   if(player.direccion==1 && !player.fly){
-      esat::DrawSprite(*(player.sprite+(an+4)),player.st);
+    esat::DrawSprite(*(player.sprite+(an+4)),player.st);
   }
   if(player.direccion==1 && player.fly){
-      esat::DrawSprite(*(player.sprite+(an+12)),player.st);
+    esat::DrawSprite(*(player.sprite+(an+12)),player.st);
   }
+  
+  // if(!player.inFloor && !player.fly){
+    // esat::DrawSprite(*(player.sprite+(8)),player.st);
+  // }
 }
 
 void PlayerAll(){

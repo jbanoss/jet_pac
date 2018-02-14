@@ -8,7 +8,6 @@
 
 const int sc=1, wX=256*sc, wY=192*sc;
 int an=0;
-const int sc=3, wX=256*sc, wY=192*sc;
 
 esat::SpriteHandle sheet, *suelo;
 

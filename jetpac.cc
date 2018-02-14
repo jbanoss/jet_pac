@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 const int sc=1, wX=256*sc, wY=192*sc;
-
+int an=0;
 esat::SpriteHandle sheet, *suelo;
 
 esat::SpriteTransform stMap;
@@ -64,6 +64,8 @@ void InitPlayer(){
 	player.shoot=false;
   player.fly=false;
 	player.sprite=(esat::SpriteHandle*)malloc(16*sizeof(esat::SpriteHandle));
+  
+
 }
 
 void PlayerSprites(){
@@ -76,8 +78,7 @@ void PlayerSprites(){
 }
 
 void PlayerControls(){
-	//if(){
-		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Space)){
+		if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
 			player.shoot=true;
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up) && player.st.y>=(wY*0.15)){
@@ -89,11 +90,13 @@ void PlayerControls(){
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
 			player.st.x-=player.speed;
-      player.direccion=0;
+      player.direccion=0;      
+      ++an%=4;
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
 			player.st.x+=player.speed;
       player.direccion=1;
+      ++an%=4;
 		}
 		
 	if(player.st.x+esat::SpriteWidth(*(player.sprite+0))<0){
@@ -104,29 +107,22 @@ void PlayerControls(){
 	}
 }
 
-//player.st.x>plat.st.x+widht && player.st.x+esat::SpriteWidth(*(player.sprite+0))<plat.st.x 
-//player.st.y>plat.st.y+height && player.st.y+esat::SpriteHeight(*(player.sprite+0))<plat.st.y
-
-void PlayerColisions(){
-	
-}
-
 void DrawPlayer(){
   if(player.direccion==0 && !player.fly){
-      esat::DrawSprite(*(player.sprite+0),player.st);
+      esat::DrawSprite(*(player.sprite+an),player.st);
+
   }
   if(player.direccion==0 && player.fly){
-      esat::DrawSprite(*(player.sprite+8),player.st);
+      esat::DrawSprite(*(player.sprite+(an+8)),player.st);
   }
   
   if(player.direccion==1 && !player.fly){
-      esat::DrawSprite(*(player.sprite+4),player.st);
+      esat::DrawSprite(*(player.sprite+(an+4)),player.st);
   }
   if(player.direccion==1 && player.fly){
-      esat::DrawSprite(*(player.sprite+12),player.st);
+      esat::DrawSprite(*(player.sprite+(an+12)),player.st);
   }
 }
-
 
 void PlayerAll(){
 	PlayerSprites();
@@ -136,9 +132,11 @@ void PlayerAll(){
 
 /*----------------------*/
 
+
 /*--------Enemies-------*/
 
 /*----------------------*/
+
 
 int esat::main(int argc, char **argv) {
  

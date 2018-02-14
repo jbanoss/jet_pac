@@ -6,9 +6,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-const int sc=3 wX=256*sc, wY=192*sc;
+const int sc=3, wX=256*sc, wY=192*sc;
 
-esat::SpriteHandle mapsheet, sheet;
+esat::SpriteHandle sheet;
+<<<<<<< HEAD
+sheet=esat::SpriteFromFile("./recursos/imagenes/sheet.png");
+=======
+>>>>>>> 284edb2e42c0d82b0b9a77d73c75e9199ca4b129
 
 struct object{
 	int speed,direccion;
@@ -16,47 +20,25 @@ struct object{
 	esat::SpriteHandle *sprite;
 	esat::SpriteTransform st;
 };
-object map, plat1, plat2, plat3, floor, player;
+object plat1, plat2, plat3, floor, player;
 
-
-/*--------Map-----------*/
-
-void Positions(){
-	map.sprite=(esat::SpriteHandle*)malloc(5*sizeof(esat::SpriteHandle));	
-	
-	plat1.st.x=31;
-	plat1.st.y=73;
-  
-  
-	plat2.st.x=119;
-	plat2.st.y=97;
-  
-	plat3.st.x=191;
-	plat3.st.y=49;
- 
-	floor.st.x=0;
-	floor.st.y=185;
+void InitSprites(){
+	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
 }
 
+<<<<<<< HEAD
 void MapSprites(){
-  mapsheet=esat::SpriteFromFile("./recursos/imagenes/map.png");
+
   *(map.sprite+0)=esat::SubSprite(mapsheet,31,73,48,8);
   *(map.sprite+1)=esat::SubSprite(mapsheet,119,97,32,8);
   *(map.sprite+2)=esat::SubSprite(mapsheet,191,49,48,8);
   *(map.sprite+3)=esat::SubSprite(mapsheet,0,185,255,6);
 }
+=======
+/*--------Map-----------*/
+>>>>>>> 284edb2e42c0d82b0b9a77d73c75e9199ca4b129
 
-void DrawMap(){
-  esat::DrawSprite(*(map.sprite+0),plat1.st);
-  esat::DrawSprite(*(map.sprite+1),plat2.st);
-  esat::DrawSprite(*(map.sprite+2),plat3.st);
-  esat::DrawSprite(*(map.sprite+3),floor.st);
-}
 
-void MapAll(){
-  MapSprites();
-	DrawMap();
-}
 
 /*----------------------*/
 
@@ -131,8 +113,9 @@ int esat::main(int argc, char **argv) {
  
   esat::WindowInit(wX,wY);
   WindowSetMouseVisibility(true);
+
+  InitSprites();
   
-  Positions();
   InitPlayer();
   
   while(esat::WindowIsOpened() && !esat::IsSpecialKeyDown(esat::kSpecialKey_Escape)) {
@@ -141,7 +124,6 @@ int esat::main(int argc, char **argv) {
 	esat::DrawBegin();
     esat::DrawClear(0,0,0);
 	
-    MapAll();
     PlayerAll();
 	
     

@@ -8,6 +8,8 @@
 
 const int sc=1, wX=256*sc, wY=192*sc;
 int an=0;
+const int sc=3, wX=256*sc, wY=192*sc;
+
 esat::SpriteHandle sheet, *suelo;
 
 esat::SpriteTransform stMap;
@@ -47,6 +49,45 @@ void DrawMap(){
 	
 	stMap.x += 8*sc;
 	esat::DrawSprite(*(suelo+5), stMap);
+	
+	//plat izq
+	stMap.x = 32*sc;
+	stMap.y = 72*sc;
+	esat::DrawSprite(*(suelo+0), stMap);
+	
+	for(int i = 0; i < 4; i++){
+		stMap.x += 8*sc;
+		esat::DrawSprite(*(suelo+2), stMap);
+	}
+	
+	stMap.x += 8*sc;
+	esat::DrawSprite(*(suelo+4), stMap);
+	
+	//plat med
+	stMap.x = 120*sc;
+	stMap.y = 96*sc;
+	esat::DrawSprite(*(suelo+0), stMap);
+	
+	for(int i = 0; i < 2; i++){
+		stMap.x += 8*sc;
+		esat::DrawSprite(*(suelo+2), stMap);
+	}
+	
+	stMap.x += 8*sc;
+	esat::DrawSprite(*(suelo+4), stMap);
+	
+	//plat der
+	stMap.x = 192*sc;
+	stMap.y = 48*sc;
+	esat::DrawSprite(*(suelo+0), stMap);
+	
+	for(int i = 0; i < 4; i++){
+		stMap.x += 8*sc;
+		esat::DrawSprite(*(suelo+2), stMap);
+	}
+	
+	stMap.x += 8*sc;
+	esat::DrawSprite(*(suelo+4), stMap);
 }
 
 /*----------------------*/
@@ -79,7 +120,8 @@ void PlayerSprites(){
 
 void PlayerControls(){
 		if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
-			player.shoot=true;
+			//player.shoot=true;
+			Disparar();
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up) && player.st.y>=(wY*0.15)){
 			player.st.y-=player.speed;

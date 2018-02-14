@@ -53,21 +53,26 @@ void DrawMap(){
 
 
 /*---------Player-------*/
-no ha funcionado
+
 void InitPlayer(){
 	player.st.x=wX/2;
 	player.st.y=wY/2;
-	player.st.scale_x=1;
-	player.st.scale_y=1;
+	player.st.scale_x=sc;
+	player.st.scale_y=sc;
 	player.speed=5;
+  player.direccion=0;
 	player.shoot=false;
+  player.fly=false;
 	player.sprite=(esat::SpriteHandle*)malloc(16*sizeof(esat::SpriteHandle));
 }
 
 void PlayerSprites(){
-	for(int i=0;i<16;i++){
-		*(player.sprite+i)=esat::SpriteFromFile("./recursos/imagenes/tanques_12.png");
+	for(int i=0;i<8;i++){
+		*(player.sprite+i)=esat::SubSprite(sheet,i*14,0,14,22);
 	}
+  for(int i=0;i<8;i++){
+    *(player.sprite+(i+8))=esat::SubSprite(sheet,i*17,22,17,24);
+  }
 }
 
 void PlayerControls(){
@@ -77,17 +82,21 @@ void PlayerControls(){
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up) && player.st.y>=(wY*0.15)){
 			player.st.y-=player.speed;
+      player.fly=true;
 		}else{
-			player.st.y+=player.speed;
+			player.st.y+=3;
+      player.fly=false;
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
 			player.st.x-=player.speed;
+      player.direccion=0;
 		}
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
 			player.st.x+=player.speed;
+      player.direccion=1;
 		}
 		
-	if(player.st.x+esat::SpriteWidth(*(player.sprite+0))<33.5){
+	if(player.st.x+esat::SpriteWidth(*(player.sprite+0))<0){
 		player.st.x=wX;
 	}
 	if(player.st.x>wX){
@@ -103,8 +112,21 @@ void PlayerColisions(){
 }
 
 void DrawPlayer(){
-	esat::DrawSprite(*(player.sprite+0),player.st);
+  if(player.direccion==0 && !player.fly){
+      esat::DrawSprite(*(player.sprite+0),player.st);
+  }
+  if(player.direccion==0 && player.fly){
+      esat::DrawSprite(*(player.sprite+8),player.st);
+  }
+  
+  if(player.direccion==1 && !player.fly){
+      esat::DrawSprite(*(player.sprite+4),player.st);
+  }
+  if(player.direccion==1 && player.fly){
+      esat::DrawSprite(*(player.sprite+12),player.st);
+  }
 }
+
 
 void PlayerAll(){
 	PlayerSprites();

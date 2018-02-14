@@ -6,9 +6,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-const int sc=3, wX=256*sc, wY=192*sc;
+const int sc=1, wX=256*sc, wY=192*sc;
 
-esat::SpriteHandle sheet;
+esat::SpriteHandle sheet, *suelo;
+
+esat::SpriteTransform stMap;
 
 struct object{
 	int speed,direccion;
@@ -16,21 +18,42 @@ struct object{
 	esat::SpriteHandle *sprite;
 	esat::SpriteTransform st;
 };
-object plat1, plat2, plat3, floor, player;
+object player;
 
 void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
+	
+	suelo = (esat::SpriteHandle *)malloc(6*sizeof(esat::SpriteHandle));
+	stMap.scale_x = sc;
+	stMap.scale_y = sc;
+	
+	for(int i = 0; i < 6; i++){
+		*(suelo+i) = esat::SubSprite(sheet, i*8, 46, 8, 8);
+	}
 }
 
 /*--------Map-----------*/
 
-
+void DrawMap(){
+	//suelo
+	stMap.x = 0;
+	stMap.y = 184*sc;
+	esat::DrawSprite(*(suelo+1), stMap);
+	
+	for(int i = 0; i < 30; i++){
+		stMap.x += 8*sc;
+		esat::DrawSprite(*(suelo+3), stMap);
+	}
+	
+	stMap.x += 8*sc;
+	esat::DrawSprite(*(suelo+5), stMap);
+}
 
 /*----------------------*/
 
 
 /*---------Player-------*/
-
+no ha funcionado
 void InitPlayer(){
 	player.st.x=wX/2;
 	player.st.y=wY/2;
@@ -110,9 +133,10 @@ int esat::main(int argc, char **argv) {
 	esat::DrawBegin();
     esat::DrawClear(0,0,0);
 	
+	DrawMap();
+	
     PlayerAll();
 	
-    
     esat::DrawEnd();
 	
 	do{
@@ -121,6 +145,7 @@ int esat::main(int argc, char **argv) {
     esat::WindowFrame();
   }
   
+  free(suelo);
   free(player.sprite);
   esat::WindowDestroy();
   return 0;

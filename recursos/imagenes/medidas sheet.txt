@@ -1,0 +1,16 @@
+astronauta en pie - 14x22 - 0,0
+astronauta volando - 17x24 - 0,22
+suelo - 8x8 - 0,46
+fuel - 16x11 - 48,46
+monigote vidas - 8x6 - 64,46
+partes nave - 16x16 - 0,57
+"fuego" - 16x15 - 0,121
+explosion/propulsion - 24x16 - 32,121
+marcianos1 - 16x11 - 0,137
+marcianos2 - 16x14 - 32,137
+marcianos3 - 16x16 - 64,137
+marcianos4 - 16x7 - 96,137
+marcianos5 - 16x8 - 112,121
+marcianos6 - 15x15 - 128,121
+marcianos7 - 16x14 - 0,193
+marcianos8 - 16x14 - 0,207

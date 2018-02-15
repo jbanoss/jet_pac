@@ -16,6 +16,6 @@ marcianos7 - 16x14 - 0,225
 marcianos8 - 16x14 - 32,201
 
 suelo - 8 desde abajo
-plat1 - 
-plat2 -
-plat3 -
+plat izq - 32,72 - 48x8
+plat med - 120,96 - 32x8
+plat der - 192,48 - 48x8

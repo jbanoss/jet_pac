@@ -118,18 +118,22 @@ void PlayerSprites(){
   }
 }
 
+bool col1(){
+	return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc && player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
+}
+
 void PlayerControls(){
 		if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
 			//player.shoot=true;
 			//Disparar();
 		}
     //flying
-		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
+		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up) && !col1()){
 			player.st.y-=player.speed;
       player.fly=true;
       ++an%=4;
 		}else{
-			player.st.y+=3;
+			if(!col1()) player.st.y+=3;
       player.fly=false;
 		}
     if(player.st.y<16*sc){
@@ -218,7 +222,7 @@ void DrawPlayer(){
 void PlayerAll(){
 	PlayerSprites();
   PlayerControls();
-	PlayerCol();
+	//PlayerCol();
 	DrawPlayer();
 }
 

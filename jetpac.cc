@@ -33,7 +33,7 @@ void InitSprites(){
 	}
 }
 
-/*--------Map-----------*/
+/*--------Map-----------Josu*/
 
 void DrawMap(){
 	//suelo

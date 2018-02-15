@@ -99,7 +99,7 @@ void InitPlayer(){
 	player.st.y=wY/2;
 	player.st.scale_x=sc;
 	player.st.scale_y=sc;
-	player.speed=7.5;
+	player.speed=5;
   player.direccion=0;
 	player.shoot=false;
   player.fly=false;
@@ -163,6 +163,28 @@ void PlayerControls(){
 	}
 }
 
+void PlayerCol(){
+   //platizq
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left) &&
+  player.st.x<(32+42)*sc &&
+  player.st.y<(72+8)*sc && player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc){
+    player.st.x=(32+42)*sc;
+  }
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right) &&
+  player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc &&
+  player.st.y<(72+8)*sc && player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc){
+    player.st.x=(32)*sc-esat::SpriteWidth(*(player.sprite+8))*sc;
+  }
+  /*
+  if(player.st.y<(72+8)*sc){
+    player.st.y=(72+8)*sc;
+  }
+  if(player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc){
+    player.st.y=(72)*sc-esat::SpriteHeight(*(player.sprite+8))*sc;
+  }*/
+
+}
+
 void DrawPlayer(){
   //left
   if(player.direccion==0){
@@ -195,7 +217,8 @@ void DrawPlayer(){
 
 void PlayerAll(){
 	PlayerSprites();
-	PlayerControls();
+  PlayerControls();
+	PlayerCol();
 	DrawPlayer();
 }
 

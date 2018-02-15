@@ -14,3 +14,8 @@ marcianos5 - 16x8 - 112,121
 marcianos6 - 15x15 - 128,121
 marcianos7 - 16x14 - 0,225
 marcianos8 - 16x14 - 32,201
+
+suelo - 8 desde abajo
+plat1 - 
+plat2 -
+plat3 -

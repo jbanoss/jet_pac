@@ -588,7 +588,254 @@ void enemigo4(){
 	}
 }
 void enemigo5(){
-	
+	//ovni
+	for(int i=0;i<nEnemigos;i++){
+	/////////////////////////////////////////////
+	if((enemigo+i)->inicio){
+		printf("error1 \n");
+	int colores=rand()%4;
+	initEnemigo(i);
+	(enemigo+i)->inclinacion=5;
+	(enemigo+i)->speed=5;
+	switch(colores){
+		case 0:
+		(enemigo+i)->color=0;
+		break;
+		case 1:
+		(enemigo+i)->color=1;
+		break;
+		case 2:
+		(enemigo+i)->color=2;
+		break;
+		case 3:
+		(enemigo+i)->color=3;
+		break;
+	}
+	*((enemigo+i)->sprite2+0)= *(enemigo->sprite+(enemigo+i)->color+42);
+	(enemigo+i)->inicio=false;
+	printf("error2 \n");
+	}
+	/////////////////////////////////////////////
+	 if((enemigo+i)->direccion==1){
+		 printf("error3 \n");
+		 if((enemigo+i)->st.x<(float)esat::MousePositionX()){
+		(enemigo+i)->st.x+=(enemigo+i)->speed;
+		 }else{
+		(enemigo+i)->st.x-=(enemigo+i)->speed;
+		 }
+			 ////////////CAMBIAR RATON POR POSICION JUGADOR
+		if((enemigo+i)->st.y<(float)esat::MousePositionY()){
+			(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
+		 }else{
+			(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+		 }
+		 printf("error4 \n");
+	 }
+		printf("error5 \n");
+	esat::DrawSprite(*((enemigo+i)->sprite2+0),(enemigo+i)->st);
+printf("error8 \n");
+	if((enemigo+i)->st.x>wX){
+		(enemigo+i)->st.x=0;
+	}else if((enemigo+i)->st.x<0){
+		(enemigo+i)->st.x=wX;
+	}
+	/*if((enemigo+i)->st.y>wY){
+		(enemigo+i)->inicio=true;
+	}else if((enemigo+i)->st.y<0){
+		(enemigo+i)->inicio=true;
+	}*/
+	}
+}
+void enemigo6(){
+	//cruces
+	for(int i=0;i<nEnemigos;i++){
+	if((enemigo+i)->inicio){
+	int colores=rand()%4;
+	printf("%d \n",colores);
+	initEnemigo(i);
+	(enemigo+i)->inclinacion=rand()%5;
+	(enemigo+i)->speed=4;
+	switch(colores){
+		case 0:
+		(enemigo+i)->color=0;
+		break;
+		case 1:
+		(enemigo+i)->color=1;
+		break;
+		case 2:
+		(enemigo+i)->color=2;
+		break;
+		case 3:
+		(enemigo+i)->color=3;
+		break;
+	}
+		*((enemigo+i)->sprite2+0)= *(enemigo->sprite+(enemigo+i)->color+46);
+	(enemigo+i)->inicio=false;
+	}
+	////////////////////////////////////////
+	 if((enemigo+i)->direccion==1){
+		if((enemigo+i)->rebote){
+		(enemigo+i)->st.x+=(enemigo+i)->speed;
+		}else{
+		(enemigo+i)->st.x-=(enemigo+i)->speed;
+		}
+		
+	 	if((enemigo+i)->sube==0){
+		(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
+		}else{
+		(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+		}
+	 
+	 }else{
+		 
+		if((enemigo+i)->rebote){
+		(enemigo+i)->st.x+=(enemigo+i)->speed;
+		}else{
+		(enemigo+i)->st.x-=(enemigo+i)->speed;
+		}
+	 	if((enemigo+i)->sube==0){
+		(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
+		}else{
+		(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+		}
+	 }
+
+	esat::DrawSprite(*((enemigo+i)->sprite2+0),(enemigo+i)->st);
+		if((enemigo+i)->st.x>wX){
+			(enemigo+i)->st.x=0;
+		}else if((enemigo+i)->st.x<0){
+			(enemigo+i)->st.x=wX;
+		}
+		if((enemigo+i)->st.y>wY){
+			(enemigo+i)->direccion=0;
+			(enemigo+i)->sube=1;
+		}else if((enemigo+i)->st.y<0){
+			(enemigo+i)->sube=0;
+			(enemigo+i)->direccion=1;
+		}
+	}
+}
+void enemigo7(){
+	//naves2
+	for(int i=0;i<nEnemigos;i++){
+	/////////////////////////////////////////////
+	if((enemigo+i)->inicio){
+	int colores=rand()%4;
+	initEnemigo(i);
+	(enemigo+i)->inclinacion=(rand()%3);
+	(enemigo+i)->speed=7;
+	switch(colores){
+		case 0:
+		(enemigo+i)->color=0;
+		break;
+		case 1:
+		(enemigo+i)->color=1;
+		break;
+		case 2:
+		(enemigo+i)->color=2;
+		break;
+		case 3:
+		(enemigo+i)->color=3;
+		break;
+	}
+
+	if((enemigo+i)->direccion==1){
+		
+		*((enemigo+i)->sprite2+0)= *(enemigo->sprite+(enemigo+i)->color+50);
+	}else{
+		*((enemigo+i)->sprite2+0)= *(enemigo->sprite+(enemigo+i)->color+54);
+	}
+	(enemigo+i)->inicio=false;
+	}
+	/////////////////////////////////////////////
+	 if((enemigo+i)->direccion==1){
+		(enemigo+i)->st.x+=(enemigo+i)->speed;
+		 if((enemigo+i)->sube==0){
+
+			(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
+		 }else{
+			(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+		 }
+	 }else{
+		(enemigo+i)->st.x-=(enemigo+i)->speed;
+		if((enemigo+i)->sube==0){
+				(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
+		}else{
+
+				(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+		}
+	 }
+	esat::DrawSprite(*((enemigo+i)->sprite2+0),(enemigo+i)->st);
+	if((enemigo+i)->st.x>wX){
+		(enemigo+i)->st.x=0;
+	}else if((enemigo+i)->st.x<0){
+		(enemigo+i)->st.x=wX;
+	}
+	if((enemigo+i)->st.y>wY){
+		(enemigo+i)->inicio=true;
+	}else if((enemigo+i)->st.y<0){
+		(enemigo+i)->inicio=true;
+	}
+	}
+}
+void enemigo8(){
+	//bolsas con ojos
+		for(int i=0;i<nEnemigos;i++){
+	/////////////////////////////////////////////
+	if((enemigo+i)->inicio){
+		printf("error1 \n");
+	int colores=rand()%4;
+	initEnemigo(i);
+	(enemigo+i)->inclinacion=5;
+	(enemigo+i)->speed=5;
+	switch(colores){
+		case 0:
+		(enemigo+i)->color=0;
+		break;
+		case 1:
+		(enemigo+i)->color=1;
+		break;
+		case 2:
+		(enemigo+i)->color=2;
+		break;
+		case 3:
+		(enemigo+i)->color=3;
+		break;
+	}
+	*((enemigo+i)->sprite2+0)= *(enemigo->sprite+(enemigo+i)->color+58);
+	(enemigo+i)->inicio=false;
+	printf("error2 \n");
+	}
+	/////////////////////////////////////////////
+	 if((enemigo+i)->direccion==1){
+		 printf("error3 \n");
+		 if((enemigo+i)->st.x<(float)esat::MousePositionX()){
+		(enemigo+i)->st.x+=(enemigo+i)->speed;
+		 }else{
+		(enemigo+i)->st.x-=(enemigo+i)->speed;
+		 }
+			 ////////////CAMBIAR RATON POR POSICION JUGADOR
+		if((enemigo+i)->st.y<(float)esat::MousePositionY()){
+			(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
+		 }else{
+			(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+		 }
+		 printf("error4 \n");
+	 }
+		printf("error5 \n");
+	esat::DrawSprite(*((enemigo+i)->sprite2+0),(enemigo+i)->st);
+printf("error8 \n");
+	if((enemigo+i)->st.x>wX){
+		(enemigo+i)->st.x=0;
+	}else if((enemigo+i)->st.x<0){
+		(enemigo+i)->st.x=wX;
+	}
+	/*if((enemigo+i)->st.y>wY){
+		(enemigo+i)->inicio=true;
+	}else if((enemigo+i)->st.y<0){
+		(enemigo+i)->inicio=true;
+	}*/
+	}
 }
 void niveles(){
 	//dependiendo de la variable global nivel ejecuta un tipo de enemigos *alberto
@@ -602,6 +849,13 @@ void niveles(){
 	case 3:enemigo4();
 	break;
 	case 4:enemigo5();
+	break;
+	case 5:enemigo6();
+	break;
+	case 6:enemigo7();
+	break;
+	case 7:enemigo8();
+	break;
 	}
 }
 

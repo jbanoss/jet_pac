@@ -24,12 +24,12 @@ struct object{
 	esat::SpriteTransform st;
 };
 object player;
-object *enemigo;
+object *enemigo; //= NULL
 
 struct Bonus{
 	int x, y;
 	esat::SpriteHandle *sprite;
-}*bonus;
+}*bonus = NULL;
 
 void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
@@ -867,6 +867,13 @@ void niveles(){
 
 /*----------------------*/
 
+/*---------Bonus--------*/
+
+void InitBonus(){
+	
+}
+
+/*----------------------*/
 
 int esat::main(int argc, char **argv) {
  
@@ -875,7 +882,10 @@ int esat::main(int argc, char **argv) {
  
   esat::WindowInit(wX,wY);
   WindowSetMouseVisibility(true);
- enemigo=(object*)malloc(3*sizeof(object));
+  
+  InitBonus(); //punteros y sprites
+  
+  enemigo=(object*)malloc(3*sizeof(object));
   InitSprites();
   enemySprites();
   InitPlayer();

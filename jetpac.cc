@@ -870,7 +870,9 @@ void niveles(){
 /*---------Bonus--------*/
 
 void InitBonus(){
+	bonus = (Bonus *)malloc(5*sizeof(Bonus));
 	
+	(*(bonus+0)).sprite = (esat::SpriteHandle *)malloc(sizeof(esat::SpriteHandle));
 }
 
 /*----------------------*/

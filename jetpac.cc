@@ -25,6 +25,12 @@ struct object{
 };
 object player;
 object *enemigo;
+
+struct Bonus{
+	int x, y;
+	esat::SpriteHandle *sprite;
+}*bonus;
+
 void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
 	

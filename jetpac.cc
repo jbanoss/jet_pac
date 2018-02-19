@@ -891,8 +891,16 @@ void niveles(){
 void InitBonus(){
 	bonus = (Bonus *)malloc(5*sizeof(Bonus));
 	
+	bonusAux.sprite = (esat::SpriteHandle *)malloc(sizeof(esat::SpriteHandle));
+	(*(bonus+0)).sprite = (esat::SpriteHandle *)malloc(sizeof(esat::SpriteHandle));
+	
+	bonusS = esat::SubSprite(sheet, 0, 0, 14, 22);
 }
 
+
+void DrawBonus(){
+	//esat::DrawSprite(bonusS, 100, 100); WTF NO SE USAR DRAW SPRITES AHORA???????????????????????????????????????????????????????? estoy desesperado
+}
 /*----------------------*/
 
 int esat::main(int argc, char **argv) {
@@ -922,6 +930,8 @@ int esat::main(int argc, char **argv) {
 	niveles();
 	DrawMap();
     PlayerAll();
+	
+	DrawBonus();
 	
     esat::DrawEnd();
 	

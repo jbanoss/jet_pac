@@ -956,7 +956,6 @@ void niveles(){
 /*----------------------*/
 
 /*---------Bonus--------*/
-
 void InitBonus(){
 	bonus = (Bonus *)malloc(5*sizeof(Bonus));
 	
@@ -980,7 +979,7 @@ int esat::main(int argc, char **argv) {
   esat::WindowInit(wX,wY);
   WindowSetMouseVisibility(true);
   
-  InitBonus(); //punteros y sprites
+  //InitBonus(); //punteros y sprites
   
   enemigo=(object*)malloc(3*sizeof(object));
   InitSprites();
@@ -996,11 +995,9 @@ int esat::main(int argc, char **argv) {
     esat::DrawBegin();
     esat::DrawClear(0,0,0);
 	
-	niveles();
-	DrawMap();
-    PlayerAll();
-	
-	DrawBonus();
+      niveles();
+      DrawMap();
+      PlayerAll();
 	
     esat::DrawEnd();
 	

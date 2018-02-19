@@ -129,7 +129,26 @@ void PlayerSprites(){
 }
 
 bool col1(){
-	return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc && player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
+    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
+  } 
+  // if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Down)){
+    // return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
+    // player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
+  // }
+  // if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
+    // return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
+    // player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
+  // }
+  // if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
+    // return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
+    // player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
+  // }
+  
+  
+  return false;
+	
 }
 
 void PlayerControls(){
@@ -879,7 +898,7 @@ int esat::main(int argc, char **argv) {
   esat::WindowInit(wX,wY);
   WindowSetMouseVisibility(true);
   
-  InitBonus(); //punteros y sprites
+  //InitBonus(); //punteros y sprites
   
   enemigo=(object*)malloc(3*sizeof(object));
   InitSprites();

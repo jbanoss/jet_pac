@@ -10,7 +10,7 @@
 const int sc=3, wX=256*sc, wY=192*sc,nivel=1,nEnemigos=1;
 int an=0;
 
-esat::SpriteHandle sheet, *suelo;
+esat::SpriteHandle sheet, *suelo = NULL, bonusS;
 
 esat::SpriteTransform stMap;
 
@@ -28,7 +28,7 @@ object *enemigo; //= NULL
 
 struct Bonus{
 	int x, y;
-	esat::SpriteHandle *sprite;
+	esat::SpriteHandle *sprite = NULL;
 }*bonus = NULL, bonusAux;
 
 void InitSprites(){
@@ -888,6 +888,11 @@ void niveles(){
 
 /*---------Bonus--------*/
 
+void InitBonus(){
+	bonus = (Bonus *)malloc(5*sizeof(Bonus));
+	
+}
+
 /*----------------------*/
 
 int esat::main(int argc, char **argv) {
@@ -898,7 +903,7 @@ int esat::main(int argc, char **argv) {
   esat::WindowInit(wX,wY);
   WindowSetMouseVisibility(true);
   
-  //InitBonus(); //punteros y sprites
+  InitBonus(); //punteros y sprites
   
   enemigo=(object*)malloc(3*sizeof(object));
   InitSprites();

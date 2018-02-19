@@ -106,7 +106,7 @@ void DrawMap(){
 
 void InitPlayer(){
 	player.st.x=wX/2;
-	player.st.y=wY/2;
+	player.st.y=170*sc;
 	player.st.scale_x=sc;
 	player.st.scale_y=sc;
 	player.speed=5;
@@ -128,27 +128,70 @@ void PlayerSprites(){
   }
 }
 
-bool col1(){
+bool Col1Up(){
   if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
-    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
-    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
-  } 
-  // if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Down)){
-    // return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
-    // player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
-  // }
-  // if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
-    // return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
-    // player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
-  // }
-  // if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
-    // return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc >(72)*sc && player.st.y < 80*sc &&
-    // player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+42)*sc;
-  // }
-  
-  
+    return player.st.y>(72)*sc && player.st.y<(72+8)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x<(32+48)*sc;
+  }
   return false;
-	
+}
+bool Col1Left(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
+    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc && player.st.y<(72+7)*sc &&
+    player.st.x>(32)*sc && player.st.x<(32+48)*sc;
+  }
+  return false;
+}
+bool Col1Right(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
+    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc && player.st.y<(72+7)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc && player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc<(32+48)*sc;
+  }
+  return false;
+}
+
+bool Col2Up(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
+    return player.st.y>(96)*sc && player.st.y<(96+8)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(120)*sc && player.st.x<(120+32)*sc;
+  }
+  return false;
+}
+bool Col2Left(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
+    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(96)*sc && player.st.y<(96+7)*sc &&
+    player.st.x>(120)*sc && player.st.x<(120+32)*sc;
+  }
+  return false;
+}
+bool Col2Right(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
+    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(96)*sc && player.st.y<(96+7)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(120)*sc && player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc<(120+32)*sc;
+  }
+  return false;
+}
+
+bool Col3Up(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up)){
+    return player.st.y>(48)*sc && player.st.y<(48+8)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(192)*sc && player.st.x<(192+48)*sc;
+  } 
+  return false;
+}
+bool Col3Left(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
+    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(48)*sc && player.st.y<(48+7)*sc &&
+    player.st.x>(192)*sc && player.st.x<(192+48)*sc;
+  }
+  return false;
+}
+bool Col3Right(){
+  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
+    return player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(48)*sc && player.st.y<(48+7)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(192)*sc && player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc<(192+48)*sc;
+  }
+  return false;
 }
 
 void PlayerControls(){
@@ -156,33 +199,81 @@ void PlayerControls(){
 			//player.shoot=true;
 			//Disparar();
 		}
+    
     //flying
-		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up) && !col1()){
+		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Up) && !Col1Up() && !Col2Up() && !Col3Up()){
 			player.st.y-=player.speed;
       player.fly=true;
       ++an%=4;
 		}else{
-			if(!col1()) player.st.y+=3;
+			if(!Col1Up() && !Col2Up() && !Col3Up()) player.st.y+=3;
       player.fly=false;
 		}
     if(player.st.y<16*sc){
       player.st.y=16*sc;
     }
+    
+    //walk
     if(player.st.y+esat::SpriteHeight(*(player.sprite+0))*sc>184*sc){
       player.st.y=184*sc-esat::SpriteHeight(*(player.sprite+0))*sc;
       player.inFloor=true;
     }else{
       player.inFloor=false;
     }
+    if(player.st.y+esat::SpriteHeight(*(player.sprite+0))*sc>72*sc && player.st.y<(72+6)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(35)*sc && player.st.x<(32+46)*sc){
+      player.st.y=72*sc-esat::SpriteHeight(*(player.sprite+0))*sc;
+      player.inFloor=true;
+      if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
+			player.st.x-=player.speed;
+      player.direccion=0;      
+      ++an%=4;
+      }
+      if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
+			player.st.x+=player.speed;
+      player.direccion=1;
+      ++an%=4;
+		}
+    }
+    if(player.st.y+esat::SpriteHeight(*(player.sprite+0))*sc>96*sc && player.st.y<(96+6)*sc &&
+    player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(123)*sc && player.st.x<(120+30)*sc){
+      player.st.y=96*sc-esat::SpriteHeight(*(player.sprite+0))*sc;
+      player.inFloor=true;
+      if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
+			player.st.x-=player.speed;
+      player.direccion=0;      
+      ++an%=4;
+      }
+      if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
+			player.st.x+=player.speed;
+      player.direccion=1;
+      ++an%=4;
+		}
+    }
+    if(player.st.y+esat::SpriteHeight(*(player.sprite+0))*sc>48*sc && player.st.y<(48+6)*sc &&
+      player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(195)*sc && player.st.x<(192+46)*sc){
+      player.st.y=48*sc-esat::SpriteHeight(*(player.sprite+0))*sc;
+      player.inFloor=true;
+      if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
+			player.st.x-=player.speed;
+      player.direccion=0;      
+      ++an%=4;
+      }
+      if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
+			player.st.x+=player.speed;
+      player.direccion=1;
+      ++an%=4;
+		}
+    }
     
     //Left
-		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
+		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left) && !Col1Left() && !Col2Left() && !Col3Left()){
 			player.st.x-=player.speed;
       player.direccion=0;      
       ++an%=4;
 		}
     //Right
-		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
+		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right) && !Col1Right() && !Col2Right() && !Col3Right()){
 			player.st.x+=player.speed;
       player.direccion=1;
       ++an%=4;
@@ -194,28 +285,6 @@ void PlayerControls(){
 	if(player.st.x>wX){
 		player.st.x=0;
 	}
-}
-
-void PlayerCol(){
-   //platizq
-  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left) &&
-  player.st.x<(32+42)*sc &&
-  player.st.y<(72+8)*sc && player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc){
-    player.st.x=(32+42)*sc;
-  }
-  if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right) &&
-  player.st.x+esat::SpriteWidth(*(player.sprite+8))*sc>(32)*sc &&
-  player.st.y<(72+8)*sc && player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc){
-    player.st.x=(32)*sc-esat::SpriteWidth(*(player.sprite+8))*sc;
-  }
-  /*
-  if(player.st.y<(72+8)*sc){
-    player.st.y=(72+8)*sc;
-  }
-  if(player.st.y+esat::SpriteHeight(*(player.sprite+8))*sc>(72)*sc){
-    player.st.y=(72)*sc-esat::SpriteHeight(*(player.sprite+8))*sc;
-  }*/
-
 }
 
 void DrawPlayer(){
@@ -924,7 +993,7 @@ int esat::main(int argc, char **argv) {
   while(esat::WindowIsOpened() && !esat::IsSpecialKeyDown(esat::kSpecialKey_Escape)) {
 	last_time = esat::Time();
 	
-	esat::DrawBegin();
+    esat::DrawBegin();
     esat::DrawClear(0,0,0);
 	
 	niveles();

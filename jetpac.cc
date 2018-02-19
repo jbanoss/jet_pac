@@ -9,6 +9,9 @@
 
 const int sc=3, wX=256*sc, wY=192*sc,nivel=1,nEnemigos=1;
 int an=0;
+int cont_fuel=1;
+bool Ship_Complete=false;
+bool Respawn_Fuel=false;
 
 esat::SpriteHandle sheet, *suelo = NULL, bonusS;
 
@@ -31,16 +34,72 @@ struct Bonus{
 	esat::SpriteHandle *sprite = NULL;
 }*bonus = NULL, bonusAux;
 
+struct Tship{
+	int ship_x;
+	int ship_y;
+	esat::SpriteHandle Sprite_Ship;	
+	esat::SpriteTransform ts;
+};
+Tship *Ship;
+
 void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
 	
 	suelo = (esat::SpriteHandle *)malloc(6*sizeof(esat::SpriteHandle));
+	Ship=(Tship*)malloc(10*sizeof(Tship));
 	stMap.scale_x = sc;
 	stMap.scale_y = sc;
 	
 	for(int i = 0; i < 6; i++){
 		*(suelo+i) = esat::SubSprite(sheet, i*8, 46, 8, 8);
 	}
+	/////////////////////////////////////////////////////////////////Load Sprite Ship.
+	(*(Ship+0)).Sprite_Ship=esat::SubSprite(sheet,48,46,16,11);
+	(*(Ship+0)).ts.scale_x = sc;
+	(*(Ship+0)).ts.scale_y = sc;
+
+	for(int j = 0; j <9; j++){
+		(*(Ship+j+1)).Sprite_Ship=esat::SubSprite(sheet,0+j*16,57,16,16);
+		(*(Ship+j+1)).ts.scale_x = sc;
+		(*(Ship+j+1)).ts.scale_y = sc;
+	}
+
+	(*(Ship+1)).ts.x=520;
+	(*(Ship+1)).ts.y=505;
+	(*(Ship+4)).ts.x=130;
+	(*(Ship+4)).ts.y=168;
+	(*(Ship+7)).ts.x=520;
+	(*(Ship+7)).ts.y=350;
+}
+
+void Fuel(){
+
+	if(!Ship_Complete){
+
+		++cont_fuel%=40;
+
+		if(cont_fuel==0){
+			Respawn_Fuel=true;
+			(*(Ship+0)).ts.x=rand()%765+2;
+			(*(Ship+0)).ts.y=10;
+			Ship_Complete=true;
+			
+		}
+
+	}	
+
+	if(Respawn_Fuel){
+		esat::DrawSprite((*(Ship+0)).Sprite_Ship,(*(Ship+0)).ts);
+	}
+	
+}
+
+void Spawn_Ship(){
+
+	esat::DrawSprite((*(Ship+1)).Sprite_Ship,(*(Ship+1)).ts);
+	esat::DrawSprite((*(Ship+4)).Sprite_Ship,(*(Ship+4)).ts);
+	esat::DrawSprite((*(Ship+7)).Sprite_Ship,(*(Ship+7)).ts);
+
 }
 
 /*--------Map-----------*/
@@ -1009,6 +1068,7 @@ int esat::main(int argc, char **argv) {
   
   free(suelo);
   free(player.sprite);
+  free(Ship);
   esat::WindowDestroy();
   return 0;
 }

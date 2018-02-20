@@ -102,6 +102,11 @@ void Spawn_Ship(){
 
 }
 
+void ShipAll(){
+  Fuel();
+  Spawn_Ship();
+}
+
 /*--------Map-----------*/
 
 void DrawMap(){
@@ -1056,6 +1061,7 @@ int esat::main(int argc, char **argv) {
 	
       niveles();
       DrawMap();
+      ShipAll();
       PlayerAll();
 	
     esat::DrawEnd();

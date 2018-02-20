@@ -8,14 +8,15 @@
 #include <time.h>
 
 const int sc=3, wX=256*sc, wY=192*sc,nivel=1,nEnemigos=1;
-int an=0;
+int an=0, animBonus = 0, r; //r de random
 int cont_fuel=1;
 bool Ship_Complete=false;
 bool Respawn_Fuel=false;
+bool bonusExist = false;
 
 esat::SpriteHandle sheet, *suelo = NULL, bonusS;
 
-esat::SpriteTransform stMap;
+esat::SpriteTransform stMap, stBonus;
 
 struct object{
 	int speed,direccion,lado,inclinacion,sube,danza,anim,color;
@@ -30,9 +31,10 @@ object player;
 object *enemigo; //= NULL
 
 struct Bonus{
-	int x, y;
+	int animacion = 0, numS;
 	esat::SpriteHandle *sprite = NULL;
-}*bonus = NULL, bonusAux;
+	bool spawn = false;
+}*bonus = NULL;
 
 struct Tship{
 	int ship_x;
@@ -1023,30 +1025,103 @@ void niveles(){
 void InitBonus(){
 	bonus = (Bonus *)malloc(5*sizeof(Bonus));
 	
-	bonusAux.sprite = (esat::SpriteHandle *)malloc(sizeof(esat::SpriteHandle));
+	//verde
 	(*(bonus+0)).sprite = (esat::SpriteHandle *)malloc(sizeof(esat::SpriteHandle));
+	(*((*(bonus+0)).sprite+0)) = esat::SubSprite(sheet, 70, 46, 16, 9);
+	(*(bonus+0)).numS = 1;
 	
-	bonusS = esat::SubSprite(sheet, 0, 0, 14, 22);
+	//oro
+	(*(bonus+1)).sprite = (esat::SpriteHandle *)malloc(sizeof(esat::SpriteHandle));
+	(*((*(bonus+1)).sprite+0)) = esat::SubSprite(sheet, 86, 46, 16, 8);
+	(*(bonus+1)).numS = 1;
+	
+	//triforce
+	(*(bonus+2)).sprite = (esat::SpriteHandle *)malloc(2*sizeof(esat::SpriteHandle));
+	(*((*(bonus+2)).sprite+0)) = esat::SubSprite(sheet, 112, 153, 15, 13);
+	(*((*(bonus+2)).sprite+1)) = esat::SubSprite(sheet, 112, 166, 15, 13);
+	(*(bonus+2)).numS = 2;
+	
+	//uranio
+	(*(bonus+3)).sprite = (esat::SpriteHandle *)malloc(2*sizeof(esat::SpriteHandle));
+	(*((*(bonus+3)).sprite+0)) = esat::SubSprite(sheet, 112, 179, 15, 11);
+	(*((*(bonus+3)).sprite+1)) = esat::SubSprite(sheet, 112, 190, 15, 11);
+	(*(bonus+3)).numS = 2;
+	
+	//diamante
+	(*(bonus+4)).sprite = (esat::SpriteHandle *)malloc(7*sizeof(esat::SpriteHandle));
+	for(int i = 0; i < 7; i++){
+		(*((*(bonus+4)).sprite+i)) = esat::SubSprite(sheet, i*14, 253, 14, 12);
+	}
+	(*(bonus+4)).numS = 7;
+	
+	stBonus.scale_x = sc;
+	stBonus.scale_y = sc;
 }
 
+void mostrarBonus(Bonus (*b)){
+	esat::DrawSprite((*((*b).sprite+(*b).animacion)), stBonus);
+	
+	if(stBonus.x == 0){
+		r = rand()%5;
+		
+		switch(r){
+			case 0: stBonus.x = 1 + rand()%16; break;
+			
+			case 1: stBonus.x = 33 + rand()%32; break;
+			
+			case 2: stBonus.x = 81 + rand()%25; break;
+			
+			case 3: stBonus.x = 121 + rand()%17; break;
+			
+			case 4: stBonus.x = 193 + rand()%33; break;
+		}
+	}
+	
+	if(animBonus%3 == 0) { (*b).animacion++; (*b).animacion %= (*b).numS; }
+	
+	animBonus++;
+	
+	switch(r){
+		case 0: if(stBonus.y < (184*sc - esat::SpriteHeight((*((*b).sprite))))){ stBonus.y += 5;} break;
+			
+		case 1: if(stBonus.y < (72*sc - esat::SpriteHeight((*((*b).sprite))))){ stBonus.y += 5;} break;
+		
+		case 2: if(stBonus.y < (184*sc - esat::SpriteHeight((*((*b).sprite))))){ stBonus.y += 5;} break;
+			
+		case 3: if(stBonus.y < (96*sc - esat::SpriteHeight((*((*b).sprite))))){ stBonus.y += 5;} break;
+			
+		case 4: if(stBonus.y < (48*sc - esat::SpriteHeight((*((*b).sprite))))){ stBonus.y += 5;} break;
+	}
+}
 
-void DrawBonus(){
-	//esat::DrawSprite(bonusS, 100, 100); WTF NO SE USAR DRAW SPRITES AHORA???????????????????????????????????????????????????????? estoy desesperado
+void SpawnBonus(){
+	if(!bonusExist && rand()%1000 < 10) {
+		(*(bonus+rand()%5)).spawn = true;
+		bonusExist = true;
+		stBonus.y = -16;
+		stBonus.x = 0;
+	}
+	if(bonusExist) {
+		for(int i = 0; i < 5; i++){
+			if((*(bonus+i)).spawn) {
+				mostrarBonus((bonus+i));
+				//recogerBonus((bonus+i));
+			}
+		}
+	}
 }
 /*----------------------*/
 
 int esat::main(int argc, char **argv) {
- 
   double current_time,last_time;
   unsigned char fps=25;
  
   esat::WindowInit(wX,wY);
   WindowSetMouseVisibility(true);
   
-  //InitBonus(); //punteros y sprites
-  
   enemigo=(object*)malloc(3*sizeof(object));
   InitSprites();
+  InitBonus(); //punteros y sprites
   enemySprites();
   InitPlayer();
   //por algun motivo no coje inicio como true en el struct *alberto
@@ -1063,6 +1138,8 @@ int esat::main(int argc, char **argv) {
       DrawMap();
       ShipAll();
       PlayerAll();
+	  
+	  SpawnBonus();
 	
     esat::DrawEnd();
 	

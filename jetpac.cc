@@ -568,12 +568,10 @@ void enemigo1(){
 	if((enemigo+i)->inicio){
 		srand(time(NULL));
 	int colores=rand()%4;
-	printf("enemigo numero %d \n",i);
 	initEnemigo(i);
 	(enemigo+i)->inclinacion=(rand()%3);
 	(enemigo+i)->speed=6;
 	(enemigo+i)->tipo=1;
-	printf("colores %d \n",colores);
 	switch(colores){
 		case 0:
 		(enemigo+i)->color=0;
@@ -588,17 +586,13 @@ void enemigo1(){
 		(enemigo+i)->color=6;
 		break;
 	}
-	printf("color %d \n",(enemigo+i)->color);
 	if((enemigo+i)->direccion==1){
 		//no encuentra el sprite la sintaxis esta correcta
-printf("sprites1 \n");
 		((enemigo+i)->sprite3)= *(spriteEnemy+(enemigo+i)->color);//((enemigo+i)->color));
-		printf("sprites3 \n");
 		((enemigo+i)->sprite4)= *(spriteEnemy+(enemigo+i)->color+1);//(enemigo+i)->color+1);
 	}else{
 		((enemigo+i)->sprite3)= *(spriteEnemy+(enemigo+i)->color+8);//(enemigo+i)->color+8);
 		((enemigo+i)->sprite4)= *(spriteEnemy+(enemigo+i)->color+9);//(enemigo+i)->color+9);
-	printf("sprites2 \n");
 	}
 	(enemigo+i)->inicio=false;
 	}
@@ -657,7 +651,6 @@ void enemigo2(){
 		(enemigo+i)->color=6;
 		break;
 	}
-	printf("%d \n",(enemigo+i)->color);
 		((enemigo+i)->sprite3)= *(spriteEnemy+(enemigo+i)->color+16);
 		((enemigo+i)->sprite4)= *(spriteEnemy+(enemigo+i)->color+17);
 	(enemigo+i)->inicio=false;
@@ -706,7 +699,6 @@ void enemigo3(){
 	initEnemigo(i);
 	(enemigo+i)->inclinacion=(rand()%3);
 	(enemigo+i)->speed=6;
-	printf("%d \n",colores);
 	switch(colores){
 		case 0:
 		(enemigo+i)->color=0;
@@ -900,7 +892,6 @@ void enemigo6(){
 srand(time(NULL));
 	int colores=rand()%4;
 	(enemigo+i)->tipo=2;
-	printf("%d \n",colores);
 	initEnemigo(i);
 	(enemigo+i)->inclinacion=rand()%5;
 	(enemigo+i)->speed=4;
@@ -1109,8 +1100,6 @@ void niveles(){
 	}else{
 		//numero de enemigos que van a salir
 		if(nEnemigos<5){
-			printf("incremento \n");
-			printf("%d \n",nEnemigos);
 			if(nEnemigos==0){
 				(enemigo+0)->inicio=true;
 				(enemigo+0)->dead=false;
@@ -1118,11 +1107,8 @@ void niveles(){
 			nEnemigos++;
 			(enemigo+nEnemigos)->inicio=true;
 			(enemigo+nEnemigos)->dead=false;
-			printf("incrementado \n");
 		}
-		printf("reset \n");
 		SpawnEnemy=0;
-		printf("reseteado \n");
 	}
 	switch(nivel){
 	case 0: 

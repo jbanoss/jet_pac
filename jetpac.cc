@@ -66,17 +66,17 @@ void InitSprites(){
 		(*(Ship+j+1)).ts.scale_y = sc;
 	}
 
-	(*(Ship+1)).ts.x=520;
-	(*(Ship+1)).ts.y=505;
-	(*(Ship+4)).ts.x=130;
-	(*(Ship+4)).ts.y=168;
-	(*(Ship+7)).ts.x=520;
-	(*(Ship+7)).ts.y=350;
+	(*(Ship+1)).ts.x=173*sc;
+	(*(Ship+1)).ts.y=168*sc;
+	(*(Ship+4)).ts.x=128*sc;
+	(*(Ship+4)).ts.y=80*sc;
+	(*(Ship+7)).ts.x=52*sc;
+	(*(Ship+7)).ts.y=56*sc;
 }
 
 void Fuel(){
 
-	if(!Ship_Complete){
+	if(Ship_Complete){
 
 		++cont_fuel%=40;
 
@@ -84,14 +84,19 @@ void Fuel(){
 			Respawn_Fuel=true;
 			(*(Ship+0)).ts.x=rand()%765+2;
 			(*(Ship+0)).ts.y=10;
-			Ship_Complete=true;
+			
 			
 		}
 
 	}	
 
-	if(Respawn_Fuel){
+	if(Respawn_Fuel&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<(256*sc)&&(*(Ship+0)).ts.x<173*sc||(*(Ship+0)).ts.x>(173+16)*sc){
 		esat::DrawSprite((*(Ship+0)).Sprite_Ship,(*(Ship+0)).ts);
+	}
+	if(Respawn_Fuel){
+		
+		(*(Ship+0)).ts.y+=3;
+
 	}
 	
 }
@@ -104,9 +109,47 @@ void Spawn_Ship(){
 
 }
 
+void ColShip(){
+	
+	if(player.st.x<(*(Ship+7)).ts.x+(esat::SpriteWidth((*(Ship+7)).Sprite_Ship)*sc) && player.st.x+14*sc>(*(Ship+7)).ts.x &&
+	player.st.y<(*(Ship+7)).ts.y+(esat::SpriteHeight((*(Ship+7)).Sprite_Ship)*sc)  && player.st.y+14*sc>(*(Ship+7)).ts.y){			
+			(*(Ship+7)).ts.x=player.st.x;
+			(*(Ship+7)).ts.y=player.st.y;				
+		}
+	
+	if(player.st.x<(*(Ship+4)).ts.x+(esat::SpriteWidth((*(Ship+4)).Sprite_Ship)*sc) && player.st.x+14*sc>(*(Ship+4)).ts.x &&
+	player.st.y<(*(Ship+4)).ts.y+(esat::SpriteHeight((*(Ship+4)).Sprite_Ship)*sc)  && player.st.y+14*sc>(*(Ship+4)).ts.y){			
+			(*(Ship+4)).ts.x=player.st.x;
+			(*(Ship+4)).ts.y=player.st.y;			
+		}
+}
+
+void BuildShip(){
+
+	if((*(Ship+4)).ts.x<(*(Ship+1)).ts.x+(esat::SpriteWidth((*(Ship+1)).Sprite_Ship)*sc)&&(*(Ship+4)).ts.x+(esat::SpriteWidth((*(Ship+4)).Sprite_Ship)*sc)>(*(Ship+1)).ts.x){
+		
+		(*(Ship+4)).ts.x=(*(Ship+1)).ts.x;
+		if((*(Ship+4)).ts.y<(*(Ship+1)).ts.y-48){
+			(*(Ship+4)).ts.y+=3;
+		}
+	}
+	if((*(Ship+7)).ts.x<(*(Ship+1)).ts.x+(esat::SpriteWidth((*(Ship+1)).Sprite_Ship)*sc)&&(*(Ship+7)).ts.x+(esat::SpriteWidth((*(Ship+7)).Sprite_Ship)*sc)>(*(Ship+1)).ts.x){
+		
+		(*(Ship+7)).ts.x=(*(Ship+1)).ts.x;
+		if((*(Ship+7)).ts.y<(*(Ship+1)).ts.y-95){
+			(*(Ship+7)).ts.y+=3;
+		}
+	}
+	if((*(Ship+7)).ts.y==(*(Ship+1)).ts.y-95){
+		Ship_Complete=true;
+	}
+}
+
 void ShipAll(){
   Fuel();
   Spawn_Ship();
+  ColShip();
+  BuildShip();
 }
 
 /*--------Map-----------*/

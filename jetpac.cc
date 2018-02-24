@@ -1144,7 +1144,7 @@ void niveles(){
 		SpawnEnemy++;
 	}else{
 		//numero de enemigos que van a salir
-		if(nEnemigos<5){
+		if(nEnemigos<10){
 			printf("incremento \n");
 			printf("%d \n",nEnemigos);
 			if(nEnemigos==0){
@@ -1295,7 +1295,7 @@ int esat::main(int argc, char **argv) {
   esat::WindowInit(wX,wY);
   WindowSetMouseVisibility(true);
   
-  enemigo=(object*)malloc(3*sizeof(object));
+  enemigo=(object*)malloc(20*sizeof(object));
   InitSprites();
   InitBonus(); //punteros y sprites
   enemySprites();

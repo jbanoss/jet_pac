@@ -8,7 +8,7 @@
 #include <time.h>
 
 const int sc=3, wX=256*sc, wY=192*sc;
-int nivel=1,nEnemigos=0,SpawnEnemy=0;
+int nivel=2,nEnemigos=0,SpawnEnemy=0;
 int an=0, animBonus = 0, r; //r de random
 int cont_fuel=1;
 bool Ship_Complete=false;
@@ -20,10 +20,11 @@ esat::SpriteHandle sheet, *suelo = NULL, bonusS,*spriteEnemy;
 esat::SpriteTransform stMap, stBonus;
 
 struct object{
-	int speed,direccion,lado,inclinacion,sube,danza,anim,color,contSpawn,contMuerte,tipo;
+	int speed,direccion,lado,inclinacion,sube,danza,anim,
+	color,contSpawn,contMuerte,tipo;
 	float x,y,aux;
 	bool shoot, fly, inFloor; 
-	bool inicio=true,rebote,dead=false;
+	bool inicio=true,rebote,dead=false,choqueH,choqueV;
 
 	esat::SpriteHandle *sprite;
 	esat::SpriteHandle *sprite2;
@@ -443,7 +444,7 @@ void PlayerAll(){
 /*--------Enemies-------*/
 
 void enemySprites(){
-		spriteEnemy = (esat::SpriteHandle *)malloc(65*sizeof(esat::SpriteHandle));
+	spriteEnemy = (esat::SpriteHandle *)malloc(65*sizeof(esat::SpriteHandle));
 		//(enemigo)->sprite2 = (esat::SpriteHandle *)malloc(40*sizeof(esat::SpriteHandle));
 		//meteoritos (8-15 al reves)
 	for(int i=0;i<8;i++){
@@ -496,35 +497,62 @@ void initEnemigo(int actual){
 	srand(time(NULL));
 		(enemigo+actual)->contMuerte=0;
 		(enemigo+actual)->lado=rand()%2;
+		(enemigo+actual)->choqueH=false;
+		(enemigo+actual)->choqueV=false;
+		printf("lado %d \n",(enemigo+actual)->lado);
+		//(enemigo+actual)->direccion=rand()%2;
+		//printf("direccion %d \n",(enemigo+actual)->direccion);
 		(enemigo+actual)->sube=rand()%2;
+		printf("sube %d \n",(enemigo+actual)->sube);
 		(enemigo+actual)->st.scale_x=sc;
+		printf("st.scale_x %f \n",(enemigo+actual)->st.scale_x);
 		(enemigo+actual)->st.scale_y=sc;
+		printf("st.scale_y %f \n",(enemigo+actual)->st.scale_y);
 		(enemigo+actual)->anim=0;
+		printf("anim %d \n",(enemigo+actual)->anim);
 		(enemigo+actual)->st.angle=0.0f;
+		printf("st.angle %f \n",(enemigo+actual)->st.angle);
 		if((enemigo+actual)->lado==1){
 			(enemigo+actual)->rebote=false;
+			printf("rebote %d \n",(enemigo+actual)->rebote);
 			(enemigo+actual)->st.x=wX-esat::SpriteWidth(*(spriteEnemy+0))*sc;
+			printf("st.x %f \n",(enemigo+actual)->st.x);
 			(enemigo+actual)->st.y=rand()%wY-200;
+			printf("st.y %f \n",(enemigo+actual)->st.y);
 			if((enemigo+actual)->st.y<50*sc){
-				(enemigo+actual)->st.y=(50*sc)+rand()%50;
+				(enemigo+actual)->st.y=(50*sc)+rand()%100*sc;
+				printf("st.y 2%f \n",(enemigo+actual)->st.y);
 			}
 			(enemigo+actual)->direccion=0;
+			printf("direccion %d \n",(enemigo+actual)->direccion);
 		}else{
 			(enemigo+actual)->rebote=true;
+			printf("rebote %d \n",(enemigo+actual)->rebote);
 			(enemigo+actual)->st.y=rand()%wY-200;
+			printf("st.y %f \n",(enemigo+actual)->st.y);
 			if((enemigo+actual)->st.y<50*sc){
-				(enemigo+actual)->st.y=(50*sc)+rand()%50*sc;
+				(enemigo+actual)->st.y=(50*sc)+rand()%100*sc;
 			}			
 			(enemigo+actual)->st.x=0;
+			printf("st.x %f \n",(enemigo+actual)->st.x);
 			(enemigo+actual)->direccion=1;
+			printf("direccion %d \n",(enemigo+actual)->direccion);
 		}
 }
 void colisionesEnemigos(int actual){
-	/*float num[]={(enemigo+actual)->st.x,(enemigo+actual)->st.y,
-	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite))*sc,(enemigo+actual)->st.y,
-	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite))*sc,(enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite))*sc,
-	(enemigo+actual)->st.x,(enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite))*sc,
-	(enemigo+actual)->st.x,(enemigo+actual)->st.y};*/
+	srand(time(NULL));
+	if((enemigo+actual)->st.x<=(32+48)*sc && (enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))*sc>=(32)*sc 
+	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>=(72)*sc||
+	(enemigo+actual)->st.x<=(120+32)*sc && (enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))*sc>=(120)*sc 
+	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>=(96)*sc ||
+	(enemigo+actual)->st.x<=(192+48)*sc && (enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))*sc>=(192)*sc 
+	&& (enemigo+actual)->st.y<=(48+8)*sc && (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>=(48)*sc){
+	(enemigo+actual)->choqueH=true;
+	(enemigo+actual)->choqueV=true;
+	}else{
+	(enemigo+actual)->choqueH=false;
+	(enemigo+actual)->choqueV=false;
+	}
 	if((enemigo+actual)->st.x+esat::SpriteWidth((enemigo+actual)->sprite3)*sc>wX){
 		(enemigo+actual)->st.x=0;
 	}else if((enemigo+actual)->st.x<0){
@@ -535,7 +563,10 @@ void colisionesEnemigos(int actual){
 		if((enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>wY-8*sc){
 			//enemigo se para y reproduce la animacion
 			(enemigo+actual)->dead=true;
-		}else if((enemigo+actual)->st.y<16){
+		}else if((enemigo+actual)->st.y<=16){
+			(enemigo+actual)->dead=true;
+		}
+		if((enemigo+actual)->choqueH || (enemigo+actual)->choqueV){
 			(enemigo+actual)->dead=true;
 		}
 	//tipo 2 Rebotan
@@ -546,16 +577,17 @@ void colisionesEnemigos(int actual){
 			(enemigo+actual)->st.x=wX;
 		}
 		if((enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>wY-8*sc){
-			(enemigo+actual)->direccion=0;
+			(enemigo+actual)->danza=0;
 			(enemigo+actual)->sube=1;
 		}else if((enemigo+actual)->st.y<16){
+				(enemigo+actual)->danza=0;
 			(enemigo+actual)->sube=0;
-			(enemigo+actual)->direccion=1;
 		}
 	//tipo 3 Persiguen
 	}else if((enemigo+actual)->tipo==3){
-
+		
 	}
+	
 }
 
 void enemigo1(){
@@ -691,14 +723,17 @@ void enemigo2(){
 
 void enemigo3(){
 	//burbuja
-		for(int i=0;i<nEnemigos;i++){
-			if(!(enemigo+i)->dead){
+	for(int i=0;i<nEnemigos;i++){
+	if(!(enemigo+i)->dead){
 	if((enemigo+i)->inicio){
 		srand(time(NULL));
 	int colores=rand()%4;
+	(enemigo+i)->danza=0;
+	(enemigo+i)->tipo=2;
 	initEnemigo(i);
-	(enemigo+i)->inclinacion=(rand()%3);
-	(enemigo+i)->speed=6;
+	(enemigo+i)->inclinacion=4;
+	(enemigo+i)->speed=4;
+	printf("%d \n",colores);
 	switch(colores){
 		case 0:
 		(enemigo+i)->color=0;
@@ -717,22 +752,31 @@ void enemigo3(){
 	((enemigo+i)->sprite4)= *(spriteEnemy+(enemigo+i)->color+25);
 		(enemigo+i)->inicio=false;
 		}
+	if((enemigo+i)->danza>40){
+		(enemigo+i)->sube=rand()%3;
+	}else{
+		(enemigo+i)->danza++;
+	}
 	if((enemigo+i)->direccion==1){
 	(enemigo+i)->st.x+=(enemigo+i)->speed;
+
 	if((enemigo+i)->sube==0){
 		(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
-	}else{
+	}else if((enemigo+i)->sube==1){
 		(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+	}else{
+		(enemigo+i)->st.y+=0;
 	}
 	 }else{
 		
 		(enemigo+i)->st.x-=(enemigo+i)->speed;
-		if((enemigo+i)->sube==0){
-				(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
-		}else{
-
-				(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
-		}
+	if((enemigo+i)->sube==0){
+		(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
+	}else if((enemigo+i)->sube==1){
+		(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
+	}else{
+		(enemigo+i)->st.y+=0;
+	}
 	 }
 	 colisionesEnemigos(i);
 	}else{
@@ -1094,12 +1138,15 @@ void dibujar(){
 	}
 }
 void niveles(){
+	srand(time(NULL));
 	//tiempo que tardan en salir
-	if(SpawnEnemy<70){
+	if(SpawnEnemy<(rand()%100)+70){
 		SpawnEnemy++;
 	}else{
 		//numero de enemigos que van a salir
 		if(nEnemigos<5){
+			printf("incremento \n");
+			printf("%d \n",nEnemigos);
 			if(nEnemigos==0){
 				(enemigo+0)->inicio=true;
 				(enemigo+0)->dead=false;
@@ -1107,8 +1154,11 @@ void niveles(){
 			nEnemigos++;
 			(enemigo+nEnemigos)->inicio=true;
 			(enemigo+nEnemigos)->dead=false;
+			printf("incrementado \n");
 		}
+		printf("reset \n");
 		SpawnEnemy=0;
+		printf("reseteado \n");
 	}
 	switch(nivel){
 	case 0: 
@@ -1250,22 +1300,18 @@ int esat::main(int argc, char **argv) {
   InitBonus(); //punteros y sprites
   enemySprites();
   InitPlayer();
-  //por algun motivo no coje inicio como true en el struct *alberto
-  for(int i=0;i<nEnemigos;i++){
-		(enemigo+i)->inicio=true;
-	}
   while(esat::WindowIsOpened() && !esat::IsSpecialKeyDown(esat::kSpecialKey_Escape)) {
 	last_time = esat::Time();
 	
     esat::DrawBegin();
     esat::DrawClear(0,0,0);
 	
-      niveles();
+     
       DrawMap();
-      ShipAll();
+     //ShipAll();
       PlayerAll();
-	  
-	  SpawnBonus();
+	   niveles();
+	//  SpawnBonus();
 	
     esat::DrawEnd();
 	
@@ -1274,10 +1320,11 @@ int esat::main(int argc, char **argv) {
     }while((current_time-last_time)<=1000.0/fps);
     esat::WindowFrame();
   }
-  
+
+  esat::WindowDestroy();
+  free(enemigo);
   free(suelo);
   free(player.sprite);
   free(Ship);
-  esat::WindowDestroy();
   return 0;
 }

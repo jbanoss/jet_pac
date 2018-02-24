@@ -1308,7 +1308,7 @@ int esat::main(int argc, char **argv) {
 	
      
       DrawMap();
-     //ShipAll();
+     ShipAll();
       PlayerAll();
 	   niveles();
 	//  SpawnBonus();

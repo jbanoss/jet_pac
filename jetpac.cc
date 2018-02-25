@@ -230,7 +230,6 @@ void InitPlayer(){
 	player.speed=5;
   player.lifes=3;
   player.direccion=0;
-	player.shoot=false;
   player.fly=false;
   player.inFloor=false;
 	player.sprite=(esat::SpriteHandle*)malloc(16*sizeof(esat::SpriteHandle));
@@ -407,8 +406,12 @@ void MostrarDisparo(){
 }
 
 void PlayerControls(){
-		if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
+		if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space) && !disparo.e){
 			Disparar();
+		}
+		
+		if(disparo.e){
+			MostrarDisparo();
 		}
     
     //flying
@@ -1475,6 +1478,7 @@ int esat::main(int argc, char **argv) {
   WindowSetMouseVisibility(true);
   
   enemigo=(object*)malloc(20*sizeof(object));
+  disparo.position = (int *)malloc(8*sizeof(int));
   InitSprites();
   InitBonus(); //punteros y sprites
   enemySprites();
@@ -1501,6 +1505,7 @@ int esat::main(int argc, char **argv) {
   }
 
   esat::WindowDestroy();
+  free(disparo.position);
   free(enemigo);
   free(suelo);
   free(player.sprite);

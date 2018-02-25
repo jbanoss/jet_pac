@@ -23,7 +23,7 @@ struct object{
 	int speed,direccion,lado,inclinacion,sube,danza,anim,
 	color,contSpawn,contMuerte,tipo, lifes;
 	float x,y,aux;
-	bool shoot, fly, inFloor; 
+	bool fly, inFloor; 
 	bool inicio=true,rebote,dead=false,choqueIzq,choqueDer,choqueUp,choqueDown;
 
 	esat::SpriteHandle *sprite;
@@ -40,6 +40,11 @@ struct Bonus{
 	esat::SpriteHandle *sprite = NULL;
 	bool spawn = false;
 }*bonus = NULL;
+
+struct Disparo{
+	int *position = NULL, x, y, dir, vel = 15;
+	bool e = false;
+}disparo;
 
 struct Tship{
 	int ship_x;
@@ -309,10 +314,102 @@ bool Col3Right(){
   return false;
 }
 
+void Disparar(){
+	disparo.dir = player.direccion;
+	disparo.x = player.st.x + 7*sc;
+	disparo.y = player.st.y + 10*sc;
+	
+	for(int i = 0; i < 12; i++){
+		*(disparo.position+i) = disparo.x;
+	}
+	disparo.e = true;
+}
+
+void MostrarDisparo(){
+	esat::DrawSetStrokeColor(255, 255, 255);
+
+	if((*(disparo.position) - disparo.x)*disparo.dir < 100*sc){
+				
+		*(disparo.position) += disparo.vel*sc*disparo.dir;
+				
+		esat::DrawLine(*(disparo.position+1), disparo.y, *(disparo.position), disparo.y);
+				
+	}else if((*(disparo.position) - disparo.x)*disparo.dir < 110*sc){
+				
+		*(disparo.position) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+1) += disparo.vel*sc*disparo.dir;
+				
+		esat::DrawLine(*(disparo.position+1), disparo.y, *(disparo.position), disparo.y);
+				
+	}else if((*(disparo.position) - disparo.x)*disparo.dir < 130*sc){
+				
+		*(disparo.position) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+1) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+2) += disparo.vel*sc*disparo.dir;
+				
+		esat::DrawLine(*(disparo.position+1), disparo.y, *(disparo.position), disparo.y);
+		esat::DrawLine(*(disparo.position+3), disparo.y, *(disparo.position+2), disparo.y);
+				
+	}else if((*(disparo.position) - disparo.x)*disparo.dir < 140*sc){
+				
+		*(disparo.position) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+1) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+2) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+3) += disparo.vel*sc*disparo.dir;
+				
+		esat::DrawLine(*(disparo.position+1), disparo.y, *(disparo.position), disparo.y);
+		esat::DrawLine(*(disparo.position+3), disparo.y, *(disparo.position+2), disparo.y);
+				
+	}else if((*(disparo.position) - disparo.x)*disparo.dir < 160*sc){
+				
+		*(disparo.position) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+1) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+2) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+3) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+4) += disparo.vel*sc*disparo.dir;
+				
+		esat::DrawLine(*(disparo.position+1), disparo.y, *(disparo.position), disparo.y);
+		esat::DrawLine(*(disparo.position+3), disparo.y, *(disparo.position+2), disparo.y);
+		esat::DrawLine(*(disparo.position+5), disparo.y, *(disparo.position+4), disparo.y);
+				
+	}else if((*(disparo.position) - disparo.x)*disparo.dir < 170*sc){
+				
+		*(disparo.position) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+1) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+2) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+3) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+4) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+5) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+6) += disparo.vel*sc*disparo.dir;
+				
+		esat::DrawLine(*(disparo.position+1), disparo.y, *(disparo.position), disparo.y);
+		esat::DrawLine(*(disparo.position+3), disparo.y, *(disparo.position+2), disparo.y);
+		esat::DrawLine(*(disparo.position+5), disparo.y, *(disparo.position+4), disparo.y);
+		esat::DrawLine(*(disparo.position+7), disparo.y, *(disparo.position+6), disparo.y);
+		
+	}else{
+				
+		*(disparo.position) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+1) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+2) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+3) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+4) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+5) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+6) += disparo.vel*sc*disparo.dir;
+		*(disparo.position+7) += disparo.vel*sc*disparo.dir;
+				
+		esat::DrawLine(*(disparo.position+1), disparo.y, *(disparo.position), disparo.y);
+		esat::DrawLine(*(disparo.position+3), disparo.y, *(disparo.position+2), disparo.y);
+		esat::DrawLine(*(disparo.position+5), disparo.y, *(disparo.position+4), disparo.y);
+		esat::DrawLine(*(disparo.position+7), disparo.y, *(disparo.position+6), disparo.y);
+	}
+	
+	if(*(disparo.position+7) > wX || *(disparo.position+7) < 0) disparo.e = false;
+}
+
 void PlayerControls(){
 		if(esat::IsSpecialKeyDown(esat::kSpecialKey_Space)){
-			//player.shoot=true;
-			//Disparar();
+			Disparar();
 		}
     
     //flying

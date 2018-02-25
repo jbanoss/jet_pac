@@ -21,7 +21,7 @@ esat::SpriteTransform stMap, stBonus;
 
 struct object{
 	int speed,direccion,lado,inclinacion,sube,danza,anim,
-	color,contSpawn,contMuerte,tipo;
+	color,contSpawn,contMuerte,tipo, lifes;
 	float x,y,aux;
 	bool shoot, fly, inFloor; 
 	bool inicio=true,rebote,dead=false,choqueIzq,choqueDer,choqueUp,choqueDown;
@@ -224,6 +224,7 @@ void InitPlayer(){
 	player.st.scale_x=sc;
 	player.st.scale_y=sc;
 	player.speed=5;
+  player.lifes=3;
   player.direccion=0;
 	player.shoot=false;
   player.fly=false;
@@ -497,11 +498,11 @@ void initEnemigo(int actual){
 	srand(time(NULL));
 		(enemigo+actual)->contMuerte=0;
 		(enemigo+actual)->lado=rand()%2;
-(enemigo+actual)->choqueIzq=false;
+    (enemigo+actual)->choqueIzq=false;
 		(enemigo+actual)->choqueDer=false;
 		(enemigo+actual)->choqueUp=false;
 		(enemigo+actual)->choqueDown=false;
-		printf("lado %d \n",(enemigo+actual)->lado);
+     printf("lado %d \n",(enemigo+actual)->lado);
 		//(enemigo+actual)->direccion=rand()%2;
 		//printf("direccion %d \n",(enemigo+actual)->direccion);
 		(enemigo+actual)->sube=rand()%2;
@@ -514,6 +515,7 @@ void initEnemigo(int actual){
 		printf("anim %d \n",(enemigo+actual)->anim);
 		(enemigo+actual)->st.angle=0.0f;
 		printf("st.angle %f \n",(enemigo+actual)->st.angle);
+    
 		if((enemigo+actual)->lado==1){
 			(enemigo+actual)->rebote=false;
 			printf("rebote %d \n",(enemigo+actual)->rebote);
@@ -658,6 +660,22 @@ void colisionesEnemigos(int actual){
 		}
 	}
 }
+
+void PlayerEnemyCol(){
+  
+  for(int i=0;i<nEnemigos;i++){
+     if(player.st.x < (enemigo+i)->st.x+esat::SpriteWidth(((enemigo+i)->sprite3))*sc && player.st.x+esat::SpriteWidth(*(player.sprite+8)) > (enemigo+i)->st.x && 
+    player.st.y < (enemigo+i)->st.y+esat::SpriteHeight(((enemigo+i)->sprite3))*sc && player.st.y+esat::SpriteHeight(*(player.sprite+8)) > (enemigo+i)->st.y){
+      player.lifes=-1;
+      player.st.x=wX/2;
+      player.st.y=170*sc;
+      
+      nEnemigos=0;
+      initEnemigo(i);;
+    }
+  }
+}
+
 
 void enemigo1(){
 	//meteorito
@@ -1253,7 +1271,9 @@ void niveles(){
 	dibujar();
 	break;
 	}
-
+  
+  
+  PlayerEnemyCol();
 }
 
 

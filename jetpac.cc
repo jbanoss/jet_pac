@@ -8,7 +8,7 @@
 #include <time.h>
 
 const int sc=3, wX=256*sc, wY=192*sc;
-int nivel=2,nEnemigos=0,SpawnEnemy=0;
+int nivel=1,nEnemigos=0,SpawnEnemy=0;
 int an=0, animBonus = 0, r; //r de random
 int cont_fuel=1;
 bool Ship_Complete=false;
@@ -24,7 +24,7 @@ struct object{
 	color,contSpawn,contMuerte,tipo;
 	float x,y,aux;
 	bool shoot, fly, inFloor; 
-	bool inicio=true,rebote,dead=false,choqueH,choqueV;
+	bool inicio=true,rebote,dead=false,choqueIzq,choqueDer,choqueUp,choqueDown;
 
 	esat::SpriteHandle *sprite;
 	esat::SpriteHandle *sprite2;
@@ -497,8 +497,10 @@ void initEnemigo(int actual){
 	srand(time(NULL));
 		(enemigo+actual)->contMuerte=0;
 		(enemigo+actual)->lado=rand()%2;
-		(enemigo+actual)->choqueH=false;
-		(enemigo+actual)->choqueV=false;
+(enemigo+actual)->choqueIzq=false;
+		(enemigo+actual)->choqueDer=false;
+		(enemigo+actual)->choqueUp=false;
+		(enemigo+actual)->choqueDown=false;
 		printf("lado %d \n",(enemigo+actual)->lado);
 		//(enemigo+actual)->direccion=rand()%2;
 		//printf("direccion %d \n",(enemigo+actual)->direccion);
@@ -541,17 +543,48 @@ void initEnemigo(int actual){
 }
 void colisionesEnemigos(int actual){
 	srand(time(NULL));
-	if((enemigo+actual)->st.x<=(32+48)*sc && (enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))*sc>=(32)*sc 
-	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>=(72)*sc||
-	(enemigo+actual)->st.x<=(120+32)*sc && (enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))*sc>=(120)*sc 
-	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>=(96)*sc ||
-	(enemigo+actual)->st.x<=(192+48)*sc && (enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))*sc>=(192)*sc 
-	&& (enemigo+actual)->st.y<=(48+8)*sc && (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>=(48)*sc){
-	(enemigo+actual)->choqueH=true;
-	(enemigo+actual)->choqueV=true;
+	if((enemigo+actual)->st.x-8*sc<=(32+48)*sc && (enemigo+actual)->st.x>=(32)*sc 
+	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(72)*sc||
+	(enemigo+actual)->st.x-8*sc<=(120+32)*sc && (enemigo+actual)->st.x>=(120)*sc 
+	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(96)*sc ||
+	(enemigo+actual)->st.x-8*sc<=(192+48)*sc && (enemigo+actual)->st.x>=(192)*sc 
+	&& (enemigo+actual)->st.y<=(48+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(48)*sc){
+		(enemigo+actual)->choqueIzq=true;
 	}else{
-	(enemigo+actual)->choqueH=false;
-	(enemigo+actual)->choqueV=false;
+				(enemigo+actual)->choqueIzq=false;
+	}
+	
+
+	if((enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(32+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8*sc)*sc>=(32)*sc 
+	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(72)*sc||
+	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(120+32)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8*sc)*sc>=(120)*sc 
+	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(96)*sc ||
+	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(192+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8*sc)*sc>=(192)*sc 
+	&& (enemigo+actual)->st.y<=(48+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(48)*sc){
+		(enemigo+actual)->choqueDer=true;
+	}else{
+		(enemigo+actual)->choqueDer=false;
+	}
+
+	if((enemigo+actual)->st.x<=(32+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(32)*sc 
+	&& (enemigo+actual)->st.y-8*sc<=(72+8)*sc && (enemigo+actual)->st.y>=(72)*sc||
+	(enemigo+actual)->st.x<=(120+32)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(120)*sc 
+	&& (enemigo+actual)->st.y-8*sc<=(96+8)*sc && (enemigo+actual)->st.y>=(96)*sc ||
+	(enemigo+actual)->st.x<=(192+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(192)*sc 
+	&& (enemigo+actual)->st.y-8*sc<=(48+8)*sc && (enemigo+actual)->st.y>=(48)*sc){
+		(enemigo+actual)->choqueUp=true;
+	}else{
+		(enemigo+actual)->choqueUp=false;
+	}
+		if((enemigo+actual)->st.x<=(32+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(32)*sc 
+	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8*sc)*sc>=(72)*sc||
+	(enemigo+actual)->st.x<=(120+32)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(120)*sc 
+	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8*sc)*sc>=(96)*sc ||
+	(enemigo+actual)->st.x<=(192+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(192)*sc 
+	&& (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))<=(48+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8*sc)*sc>=(48)*sc){
+		(enemigo+actual)->choqueDown=true;
+	}else{
+		(enemigo+actual)->choqueDown=false;
 	}
 	if((enemigo+actual)->st.x+esat::SpriteWidth((enemigo+actual)->sprite3)*sc>wX){
 		(enemigo+actual)->st.x=0;
@@ -566,7 +599,7 @@ void colisionesEnemigos(int actual){
 		}else if((enemigo+actual)->st.y<=16){
 			(enemigo+actual)->dead=true;
 		}
-		if((enemigo+actual)->choqueH || (enemigo+actual)->choqueV){
+		if((enemigo+actual)->choqueIzq || (enemigo+actual)->choqueDer ||(enemigo+actual)->choqueDown || (enemigo+actual)->choqueUp){
 			(enemigo+actual)->dead=true;
 		}
 	//tipo 2 Rebotan
@@ -579,15 +612,30 @@ void colisionesEnemigos(int actual){
 		if((enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>wY-8*sc){
 			(enemigo+actual)->danza=0;
 			(enemigo+actual)->sube=1;
-		}else if((enemigo+actual)->st.y<16){
+		}else if((enemigo+actual)->st.y<=16*sc){
 				(enemigo+actual)->danza=0;
 			(enemigo+actual)->sube=0;
+		}
+		if((enemigo+actual)->choqueIzq){
+			(enemigo+actual)->direccion=1;
+			(enemigo+actual)->danza=0;
+		}
+		if((enemigo+actual)->choqueDer){
+			(enemigo+actual)->direccion=0;
+			(enemigo+actual)->danza=0;
+		}
+		if((enemigo+actual)->choqueUp){
+			(enemigo+actual)->sube=0;
+			(enemigo+actual)->danza=0;
+		}
+		if((enemigo+actual)->choqueDown){
+			(enemigo+actual)->sube=1;
+			(enemigo+actual)->danza=0;
 		}
 	//tipo 3 Persiguen
 	}else if((enemigo+actual)->tipo==3){
 		
 	}
-	
 }
 
 void enemigo1(){
@@ -689,12 +737,8 @@ void enemigo2(){
 	}
 	////////////////////////////////////////
 	 if((enemigo+i)->direccion==1){
-		if((enemigo+i)->rebote){
+
 		(enemigo+i)->st.x+=(enemigo+i)->speed;
-		}else{
-		(enemigo+i)->st.x-=(enemigo+i)->speed;
-		}
-		
 	 	if((enemigo+i)->sube==0){
 		(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
 		}else{
@@ -702,12 +746,7 @@ void enemigo2(){
 		}
 	 
 	 }else{
-		 
-		if((enemigo+i)->rebote){
-		(enemigo+i)->st.x+=(enemigo+i)->speed;
-		}else{
 		(enemigo+i)->st.x-=(enemigo+i)->speed;
-		}
 	 	if((enemigo+i)->sube==0){
 		(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
 		}else{
@@ -842,7 +881,7 @@ void enemigo4(){
 		}else{
 			 (enemigo+i)->st.x+=(enemigo+i)->speed;
 			 //////CAMBIAR RATON POR POSICION JUGADOR
-			 if((enemigo+i)->st.y<(float)esat::MousePositionY()){
+			 if((enemigo+i)->st.y<player.st.y+(esat::SpriteHeight(*(player.sprite+8))/2)*sc){
 				(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
 			 }else{
 				(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
@@ -862,7 +901,7 @@ void enemigo4(){
 			}
 		}else{
 		(enemigo+i)->st.x-=(enemigo+i)->speed;
-		if((enemigo+i)->st.y<(float)esat::MousePositionY()){
+		if((enemigo+i)->st.y<player.st.y+(esat::SpriteHeight(*(player.sprite+8))/2)*sc){
 			(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
 		}else{
 			(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
@@ -887,8 +926,8 @@ void enemigo5(){
 			srand(time(NULL));
 		int colores=rand()%4;
 		initEnemigo(i);
-		(enemigo+i)->inclinacion=5;
-		(enemigo+i)->speed=4;
+		(enemigo+i)->inclinacion=4;
+		(enemigo+i)->speed=3;
 		(enemigo+i)->tipo=3;
 		switch(colores){
 			case 0:
@@ -909,13 +948,13 @@ void enemigo5(){
 		(enemigo+i)->inicio=false;
 		}
 		/////////////////////////////////////////////
-			 if((enemigo+i)->st.x<(float)esat::MousePositionX()){
+			 if((enemigo+i)->st.x<player.st.x+(esat::SpriteWidth(*(player.sprite+8))/2)*sc){
 			(enemigo+i)->st.x+=(enemigo+i)->speed;
 			 }else{
 			(enemigo+i)->st.x-=(enemigo+i)->speed;
 			 }
 				 ////////////CAMBIAR RATON POR POSICION JUGADOR
-			if((enemigo+i)->st.y<(float)esat::MousePositionY()){
+			if((enemigo+i)->st.y<player.st.y+(esat::SpriteHeight(*(player.sprite+8))/2)*sc){
 				(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
 			 }else{
 				(enemigo+i)->st.y-=(enemigo+i)->inclinacion;

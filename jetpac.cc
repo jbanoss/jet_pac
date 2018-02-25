@@ -8,7 +8,7 @@
 #include <time.h>
 
 const int sc=3, wX=256*sc, wY=192*sc;
-int nivel=1,nEnemigos=0,SpawnEnemy=0;
+int nivel=4,nEnemigos=0,SpawnEnemy=0;
 int an=0, animBonus = 0, r; //r de random
 int cont_fuel=1;
 bool Ship_Complete=false;
@@ -634,7 +634,28 @@ void colisionesEnemigos(int actual){
 		}
 	//tipo 3 Persiguen
 	}else if((enemigo+actual)->tipo==3){
-		
+		if((enemigo+actual)->st.x>wX){
+			(enemigo+actual)->st.x=0;
+		}else if((enemigo+actual)->st.x<0){
+			(enemigo+actual)->st.x=wX;
+		}
+		if((enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))*sc>wY-8*sc){
+			(enemigo+actual)->st.y=(enemigo+actual)->st.y;
+		}else if((enemigo+actual)->st.y<=16*sc){
+			(enemigo+actual)->st.y=(enemigo+actual)->st.y;
+		}
+		if((enemigo+actual)->choqueIzq){
+(enemigo+actual)->st.x+=(enemigo+actual)->speed;
+		}
+		if((enemigo+actual)->choqueDer){
+(enemigo+actual)->st.x-=(enemigo+actual)->speed;
+		}
+		if((enemigo+actual)->choqueUp){
+(enemigo+actual)->st.y+=(enemigo+actual)->speed;
+		}
+		if((enemigo+actual)->choqueDown){
+(enemigo+actual)->st.y-=(enemigo+actual)->speed;
+		}
 	}
 }
 
@@ -948,22 +969,25 @@ void enemigo5(){
 		(enemigo+i)->inicio=false;
 		}
 		/////////////////////////////////////////////
+		 colisionesEnemigos(i);
+		if(!(enemigo+i)->choqueIzq && !(enemigo+i)->choqueDer && !(enemigo+i)->choqueDown && !(enemigo+i)->choqueUp){
+
 			 if((enemigo+i)->st.x<player.st.x+(esat::SpriteWidth(*(player.sprite+8))/2)*sc){
 			(enemigo+i)->st.x+=(enemigo+i)->speed;
 			 }else{
 			(enemigo+i)->st.x-=(enemigo+i)->speed;
 			 }
-				 ////////////CAMBIAR RATON POR POSICION JUGADOR
 			if((enemigo+i)->st.y<player.st.y+(esat::SpriteHeight(*(player.sprite+8))/2)*sc){
 				(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
 			 }else{
 				(enemigo+i)->st.y-=(enemigo+i)->inclinacion;
 			 }
-		 colisionesEnemigos(i);
+		}
+		
 		}else{
 			(enemigo+i)->contSpawn++;
 		}
-		
+	
 	}
 }
 
@@ -1126,13 +1150,13 @@ void enemigo8(){
 	}
 	/////////////////////////////////////////////
 	 if((enemigo+i)->direccion==1){
-		 if((enemigo+i)->st.x<(float)esat::MousePositionX()){
+		 if((enemigo+i)->st.x<player.st.x+(esat::SpriteWidth(*(player.sprite+8))/2)*sc){
 		(enemigo+i)->st.x+=(enemigo+i)->speed;
 		 }else{
 		(enemigo+i)->st.x-=(enemigo+i)->speed;
 		 }
 			 ////////////CAMBIAR RATON POR POSICION JUGADOR
-		if((enemigo+i)->st.y<(float)esat::MousePositionY()){
+		if((enemigo+i)->st.y<player.st.y+(esat::SpriteHeight(*(player.sprite+8))/2)*sc){
 			(enemigo+i)->st.y+=(enemigo+i)->inclinacion;
 		 }else{
 			(enemigo+i)->st.y-=(enemigo+i)->inclinacion;

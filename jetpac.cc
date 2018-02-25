@@ -14,6 +14,8 @@ int cont_fuel=1;
 bool Ship_Complete=false;
 bool Respawn_Fuel=false;
 bool bonusExist = false;
+bool grip1=true;
+bool grip2=false;
 
 esat::SpriteHandle sheet, *suelo = NULL, bonusS,*spriteEnemy;
 
@@ -82,28 +84,22 @@ void InitSprites(){
 void Fuel(){
 
 	if(Ship_Complete){
-
+		printf("ok" );
 		++cont_fuel%=40;
 
-		if(cont_fuel==0){
+		if(cont_fuel==0&&!Respawn_Fuel){
 			Respawn_Fuel=true;
 			(*(Ship+0)).ts.x=rand()%765+2;
-			(*(Ship+0)).ts.y=10;
-			
-			
+			(*(Ship+0)).ts.y=10;		
 		}
-
 	}	
 
 	if(Respawn_Fuel&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<(256*sc)&&(*(Ship+0)).ts.x<173*sc||(*(Ship+0)).ts.x>(173+16)*sc){
 		esat::DrawSprite((*(Ship+0)).Sprite_Ship,(*(Ship+0)).ts);
 	}
-	if(Respawn_Fuel){
-		
+	if(Respawn_Fuel){	
 		(*(Ship+0)).ts.y+=3;
-
 	}
-	
 }
 
 void Spawn_Ship(){
@@ -116,17 +112,17 @@ void Spawn_Ship(){
 
 void ColShip(){
 	
-	if(player.st.x<(*(Ship+7)).ts.x+(esat::SpriteWidth((*(Ship+7)).Sprite_Ship)*sc) && player.st.x+14*sc>(*(Ship+7)).ts.x &&
+	if(grip2&&!grip1&&player.st.x<(*(Ship+7)).ts.x+(esat::SpriteWidth((*(Ship+7)).Sprite_Ship)*sc) && player.st.x+14*sc>(*(Ship+7)).ts.x &&
 	player.st.y<(*(Ship+7)).ts.y+(esat::SpriteHeight((*(Ship+7)).Sprite_Ship)*sc)  && player.st.y+14*sc>(*(Ship+7)).ts.y){			
-			(*(Ship+7)).ts.x=player.st.x;
-			(*(Ship+7)).ts.y=player.st.y;				
-		}
+		(*(Ship+7)).ts.x=player.st.x;
+		(*(Ship+7)).ts.y=player.st.y;				
+	}
 	
-	if(player.st.x<(*(Ship+4)).ts.x+(esat::SpriteWidth((*(Ship+4)).Sprite_Ship)*sc) && player.st.x+14*sc>(*(Ship+4)).ts.x &&
+	if(grip1&&player.st.x<(*(Ship+4)).ts.x+(esat::SpriteWidth((*(Ship+4)).Sprite_Ship)*sc) && player.st.x+14*sc>(*(Ship+4)).ts.x &&
 	player.st.y<(*(Ship+4)).ts.y+(esat::SpriteHeight((*(Ship+4)).Sprite_Ship)*sc)  && player.st.y+14*sc>(*(Ship+4)).ts.y){			
-			(*(Ship+4)).ts.x=player.st.x;
-			(*(Ship+4)).ts.y=player.st.y;			
-		}
+		(*(Ship+4)).ts.x=player.st.x;
+		(*(Ship+4)).ts.y=player.st.y;			
+	}
 }
 
 void BuildShip(){
@@ -134,6 +130,8 @@ void BuildShip(){
 	if((*(Ship+4)).ts.x<(*(Ship+1)).ts.x+(esat::SpriteWidth((*(Ship+1)).Sprite_Ship)*sc)&&(*(Ship+4)).ts.x+(esat::SpriteWidth((*(Ship+4)).Sprite_Ship)*sc)>(*(Ship+1)).ts.x){
 		
 		(*(Ship+4)).ts.x=(*(Ship+1)).ts.x;
+		grip1=false;
+		grip2=true;
 		if((*(Ship+4)).ts.y<(*(Ship+1)).ts.y-48){
 			(*(Ship+4)).ts.y+=3;
 		}
@@ -141,11 +139,12 @@ void BuildShip(){
 	if((*(Ship+7)).ts.x<(*(Ship+1)).ts.x+(esat::SpriteWidth((*(Ship+1)).Sprite_Ship)*sc)&&(*(Ship+7)).ts.x+(esat::SpriteWidth((*(Ship+7)).Sprite_Ship)*sc)>(*(Ship+1)).ts.x){
 		
 		(*(Ship+7)).ts.x=(*(Ship+1)).ts.x;
-		if((*(Ship+7)).ts.y<(*(Ship+1)).ts.y-95){
+		grip2=false;
+		if((*(Ship+7)).ts.y<(*(Ship+1)).ts.y-96){
 			(*(Ship+7)).ts.y+=3;
 		}
 	}
-	if((*(Ship+7)).ts.y==(*(Ship+1)).ts.y-95){
+	if((*(Ship+7)).ts.y==(*(Ship+1)).ts.y-96){
 		Ship_Complete=true;
 	}
 }

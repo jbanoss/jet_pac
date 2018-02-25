@@ -89,7 +89,6 @@ void InitSprites(){
 void Fuel(){
 
 	if(Ship_Complete){
-		printf("ok" );
 		++cont_fuel%=40;
 
 		if(cont_fuel==0&&!Respawn_Fuel){

@@ -229,7 +229,7 @@ void InitPlayer(){
 	player.st.scale_y=sc;
 	player.speed=5;
   player.lifes=3;
-  player.direccion=0;
+  player.direccion=-1;
   player.fly=false;
   player.inFloor=false;
 	player.sprite=(esat::SpriteHandle*)malloc(16*sizeof(esat::SpriteHandle));
@@ -440,7 +440,7 @@ void PlayerControls(){
       player.inFloor=true;
       if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
 			player.st.x-=player.speed;
-      player.direccion=0;      
+      player.direccion=-1;      
       ++an%=4;
       }
       if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
@@ -455,7 +455,7 @@ void PlayerControls(){
       player.inFloor=true;
       if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
 			player.st.x-=player.speed;
-      player.direccion=0;      
+      player.direccion=-1;      
       ++an%=4;
       }
       if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
@@ -470,7 +470,7 @@ void PlayerControls(){
       player.inFloor=true;
       if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left)){
 			player.st.x-=player.speed;
-      player.direccion=0;      
+      player.direccion=-1;      
       ++an%=4;
       }
       if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Right)){
@@ -483,7 +483,7 @@ void PlayerControls(){
     //Left
 		if(esat::IsSpecialKeyPressed(esat::kSpecialKey_Left) && !Col1Left() && !Col2Left() && !Col3Left()){
 			player.st.x-=player.speed;
-      player.direccion=0;      
+      player.direccion=-1;      
       ++an%=4;
 		}
     //Right
@@ -503,7 +503,7 @@ void PlayerControls(){
 
 void DrawPlayer(){
   //left
-  if(player.direccion==0){
+  if(player.direccion==-1){
     if(player.fly){
       esat::DrawSprite(*(player.sprite+(an+8)),player.st);
     }

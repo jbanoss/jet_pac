@@ -8,7 +8,7 @@
 #include <time.h>
 
 const int sc=3, wX=256*sc, wY=192*sc;
-int nivel=4,nEnemigos=0,SpawnEnemy=0;
+int nivel=1,nEnemigos=0,SpawnEnemy=0;
 int an=0, animBonus = 0, r; //r de random
 int cont_fuel=1;
 bool Ship_Complete=false;
@@ -543,11 +543,11 @@ void initEnemigo(int actual){
 }
 void colisionesEnemigos(int actual){
 	srand(time(NULL));
-	if((enemigo+actual)->st.x-8*sc<=(32+48)*sc && (enemigo+actual)->st.x>=(32)*sc 
+	if((enemigo+actual)->st.x-8<=(32+48)*sc && (enemigo+actual)->st.x>=(32)*sc 
 	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(72)*sc||
-	(enemigo+actual)->st.x-8*sc<=(120+32)*sc && (enemigo+actual)->st.x>=(120)*sc 
+	(enemigo+actual)->st.x-8<=(120+32)*sc && (enemigo+actual)->st.x>=(120)*sc 
 	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(96)*sc ||
-	(enemigo+actual)->st.x-8*sc<=(192+48)*sc && (enemigo+actual)->st.x>=(192)*sc 
+	(enemigo+actual)->st.x-8<=(192+48)*sc && (enemigo+actual)->st.x>=(192)*sc 
 	&& (enemigo+actual)->st.y<=(48+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(48)*sc){
 		(enemigo+actual)->choqueIzq=true;
 	}else{
@@ -555,11 +555,11 @@ void colisionesEnemigos(int actual){
 	}
 	
 
-	if((enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(32+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8*sc)*sc>=(32)*sc 
+	if((enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(32+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8)*sc>=(32)*sc 
 	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(72)*sc||
-	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(120+32)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8*sc)*sc>=(120)*sc 
+	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(120+32)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8)*sc>=(120)*sc 
 	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(96)*sc ||
-	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(192+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8*sc)*sc>=(192)*sc 
+	(enemigo+actual)->st.x+esat::SpriteWidth(((enemigo+actual)->sprite3))<=(192+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth(((enemigo+actual)->sprite3))+8)*sc>=(192)*sc 
 	&& (enemigo+actual)->st.y<=(48+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight((enemigo+actual)->sprite3))*sc>=(48)*sc){
 		(enemigo+actual)->choqueDer=true;
 	}else{
@@ -567,21 +567,21 @@ void colisionesEnemigos(int actual){
 	}
 
 	if((enemigo+actual)->st.x<=(32+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(32)*sc 
-	&& (enemigo+actual)->st.y-8*sc<=(72+8)*sc && (enemigo+actual)->st.y>=(72)*sc||
+	&& (enemigo+actual)->st.y-8<=(72+8)*sc && (enemigo+actual)->st.y>=(72)*sc||
 	(enemigo+actual)->st.x<=(120+32)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(120)*sc 
-	&& (enemigo+actual)->st.y-8*sc<=(96+8)*sc && (enemigo+actual)->st.y>=(96)*sc ||
+	&& (enemigo+actual)->st.y-8<=(96+8)*sc && (enemigo+actual)->st.y>=(96)*sc ||
 	(enemigo+actual)->st.x<=(192+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(192)*sc 
-	&& (enemigo+actual)->st.y-8*sc<=(48+8)*sc && (enemigo+actual)->st.y>=(48)*sc){
+	&& (enemigo+actual)->st.y-8<=(48+8)*sc && (enemigo+actual)->st.y>=(48)*sc){
 		(enemigo+actual)->choqueUp=true;
 	}else{
 		(enemigo+actual)->choqueUp=false;
 	}
 		if((enemigo+actual)->st.x<=(32+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(32)*sc 
-	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8*sc)*sc>=(72)*sc||
+	&& (enemigo+actual)->st.y<=(72+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8)*sc>=(72)*sc||
 	(enemigo+actual)->st.x<=(120+32)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(120)*sc 
-	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8*sc)*sc>=(96)*sc ||
+	&& (enemigo+actual)->st.y<=(96+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8)*sc>=(96)*sc ||
 	(enemigo+actual)->st.x<=(192+48)*sc && (enemigo+actual)->st.x+(esat::SpriteWidth((enemigo+actual)->sprite3))*sc>=(192)*sc 
-	&& (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))<=(48+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8*sc)*sc>=(48)*sc){
+	&& (enemigo+actual)->st.y+esat::SpriteHeight(((enemigo+actual)->sprite3))<=(48+8)*sc && (enemigo+actual)->st.y+(esat::SpriteHeight(((enemigo+actual)->sprite3))+8)*sc>=(48)*sc){
 		(enemigo+actual)->choqueDown=true;
 	}else{
 		(enemigo+actual)->choqueDown=false;

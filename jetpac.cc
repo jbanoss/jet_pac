@@ -317,7 +317,7 @@ void Disparar(){
 	disparo.x = player.st.x + 7*sc;
 	disparo.y = player.st.y + 10*sc;
 	
-	for(int i = 0; i < 12; i++){
+	for(int i = 0; i < 8; i++){
 		*(disparo.position+i) = disparo.x;
 	}
 	disparo.e = true;

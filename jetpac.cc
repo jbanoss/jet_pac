@@ -774,6 +774,26 @@ void PlayerEnemyCol(){
   }
 }
 
+void DisparoEnemyCol(){
+  
+  for(int i=0;i<nEnemigos;i++){
+	  switch(disparo.dir){
+		  case 1:
+			if(*(disparo.position)+esat::SpriteWidth(((enemigo+i)->sprite3))*sc > (enemigo+i)->st.x && *(disparo.position+7) < (enemigo+i)->st.x && disparo.y < (enemigo+i)->st.y+esat::SpriteHeight(((enemigo+i)->sprite3))*sc && disparo.y > (enemigo+i)->st.y){
+				(enemigo+i)->dead = true;
+				disparo.e = false;
+			}
+		  
+	  }
+	  
+    /* if(*(disparo.position+7) > (enemigo+i)->st.x+esat::SpriteWidth(((enemigo+i)->sprite3))*sc && *(disparo.position) < (enemigo+i)->st.x && 
+    disparo.y > (enemigo+i)->st.y+esat::SpriteHeight(((enemigo+i)->sprite3))*sc && disparo.y < (enemigo+i)->st.y){
+      (enemigo+i)->dead = true;
+	  disparo.e = false;
+    }*/
+  }
+}
+
 
 void enemigo1(){
 	//meteorito

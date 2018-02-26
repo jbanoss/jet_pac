@@ -49,12 +49,10 @@ struct Disparo{
 }disparo;
 
 struct Tship{
-	int ship_x;
-	int ship_y;
 	esat::SpriteHandle Sprite_Ship;	
 	esat::SpriteTransform ts;
 };
-Tship *Ship;
+Tship *Ship=NULL;
 
 void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
@@ -71,11 +69,14 @@ void InitSprites(){
 	(*(Ship+0)).Sprite_Ship=esat::SubSprite(sheet,48,46,16,11);
 	(*(Ship+0)).ts.scale_x = sc;
 	(*(Ship+0)).ts.scale_y = sc;
-
+	(*(Ship+0)).ts.angle=0;
 	for(int j = 0; j <9; j++){
 		(*(Ship+j+1)).Sprite_Ship=esat::SubSprite(sheet,0+j*16,57,16,16);
 		(*(Ship+j+1)).ts.scale_x = sc;
 		(*(Ship+j+1)).ts.scale_y = sc;
+		(*(Ship+j+1)).ts.angle=0;
+		(*(Ship+j+1)).ts.sprite_origin_x =0;
+		(*(Ship+j+1)).ts.sprite_origin_y =0;
 	}
 
 	(*(Ship+1)).ts.x=173*sc;
@@ -90,20 +91,64 @@ void Fuel(){
 
 	if(Ship_Complete){
 		++cont_fuel%=40;
-
+		printf("ok" );
 		if(cont_fuel==0&&!Respawn_Fuel){
+			printf("peeeee" );
 			Respawn_Fuel=true;
-			(*(Ship+0)).ts.x=rand()%765+2;
+			(*(Ship+0)).ts.x=rand()%768;
 			(*(Ship+0)).ts.y=10;		
 		}
 	}	
 
-	if(Respawn_Fuel&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<(256*sc)&&(*(Ship+0)).ts.x<173*sc||(*(Ship+0)).ts.x>(173+16)*sc){
+	if(Respawn_Fuel&&(*(Ship+0)).ts.x>(173+16)*sc&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<256*sc){
 		esat::DrawSprite((*(Ship+0)).Sprite_Ship,(*(Ship+0)).ts);
 	}
-	if(Respawn_Fuel){	
-		(*(Ship+0)).ts.y+=3;
+	if(Respawn_Fuel){
+		
+		if((*(Ship+0)).ts.x<80*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>32*sc&&(*(Ship+0)).ts.y+11*sc<72*sc){
+			(*(Ship+0)).ts.y+=3;
+		}else{
+			if((*(Ship+0)).ts.x<120*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>80*sc&&(*(Ship+0)).ts.y+11*sc<184*sc){
+				(*(Ship+0)).ts.y+=3;
+			}else{
+				if((*(Ship+0)).ts.x<152*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>120*sc&&(*(Ship+0)).ts.y+11*sc<96*sc){
+					(*(Ship+0)).ts.y+=3;
+				}else{
+					if((*(Ship+0)).ts.x<192*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>152*sc&&(*(Ship+0)).ts.y+11*sc<184*sc){
+						(*(Ship+0)).ts.y+=3;
+					}else{
+						if((*(Ship+0)).ts.x<240*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>192*sc&&(*(Ship+0)).ts.y+11*sc<184*sc){
+							(*(Ship+0)).ts.y+=3;
+						}else{
+							if((*(Ship+0)).ts.x<32*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>0*sc&&(*(Ship+0)).ts.y+11*sc<184*sc){
+								(*(Ship+0)).ts.y+=3;
+							}else{
+								if((*(Ship+0)).ts.x<256*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>240*sc&&(*(Ship+0)).ts.y+11*sc<184*sc){
+									(*(Ship+0)).ts.y+=3;
+								}
+							}
+						}
+					}
+				}
+			}	
+		}
 	}
+	
+	if(player.st.x<(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc) && player.st.x+14*sc>(*(Ship+0)).ts.x &&
+	player.st.y<(*(Ship+0)).ts.y+(esat::SpriteHeight((*(Ship+0)).Sprite_Ship)*sc)  && player.st.y+14*sc>(*(Ship+0)).ts.y){			
+		(*(Ship+0)).ts.x=player.st.x;
+		(*(Ship+0)).ts.y=player.st.y;				
+	}
+	
+	if((*(Ship+0)).ts.x>=(*(Ship+1)).ts.x){
+		
+		(*(Ship+0)).ts.x=(*(Ship+1)).ts.x;
+
+		if((*(Ship+0)).ts.y<152*sc){
+			(*(Ship+0)).ts.y+=3;
+		}
+	}	
+	
 }
 
 void Spawn_Ship(){
@@ -136,19 +181,19 @@ void BuildShip(){
 		(*(Ship+4)).ts.x=(*(Ship+1)).ts.x;
 		grip1=false;
 		grip2=true;
-		if((*(Ship+4)).ts.y<(*(Ship+1)).ts.y-48){
-			(*(Ship+4)).ts.y+=3;
+		if((*(Ship+4)).ts.y<152*sc){
+			(*(Ship+4)).ts.y+=2;
 		}
 	}
 	if((*(Ship+7)).ts.x<(*(Ship+1)).ts.x+(esat::SpriteWidth((*(Ship+1)).Sprite_Ship)*sc)&&(*(Ship+7)).ts.x+(esat::SpriteWidth((*(Ship+7)).Sprite_Ship)*sc)>(*(Ship+1)).ts.x){
 		
 		(*(Ship+7)).ts.x=(*(Ship+1)).ts.x;
 		grip2=false;
-		if((*(Ship+7)).ts.y<(*(Ship+1)).ts.y-96){
-			(*(Ship+7)).ts.y+=3;
+		if((*(Ship+7)).ts.y<136*sc){
+			(*(Ship+7)).ts.y+=2;
 		}
 	}
-	if((*(Ship+7)).ts.y==(*(Ship+1)).ts.y-96){
+	if((*(Ship+7)).ts.y>=136*sc){
 		Ship_Complete=true;
 	}
 }

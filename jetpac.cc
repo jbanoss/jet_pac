@@ -759,8 +759,17 @@ void colisionesEnemigos(int actual){
 	}
 }
 
-void PlayerEnemyCol(){
+void DisparoEnemigoCol(){
   
+  for(int i=0;i<nEnemigos;i++){
+     if(((*(disparo.position) < (enemigo+i)->st.x+esat::SpriteWidth((enemigo+i)->sprite3)*sc) && (*(disparo.position) > (enemigo+i)->st.x)) && 
+    (disparo.y < (enemigo+i)->st.y+esat::SpriteHeight(((enemigo+i)->sprite3))*sc && (disparo.y > (enemigo+i)->st.y))){
+      initEnemigo(i);
+    }
+  }
+}
+
+void PlayerEnemyCol(){
   for(int i=0;i<nEnemigos;i++){
      if(player.st.x < (enemigo+i)->st.x+esat::SpriteWidth(((enemigo+i)->sprite3))*sc && player.st.x+esat::SpriteWidth(*(player.sprite+8)) > (enemigo+i)->st.x && 
     player.st.y < (enemigo+i)->st.y+esat::SpriteHeight(((enemigo+i)->sprite3))*sc && player.st.y+esat::SpriteHeight(*(player.sprite+8)) > (enemigo+i)->st.y){
@@ -769,32 +778,10 @@ void PlayerEnemyCol(){
       player.st.y=170*sc;
       
       nEnemigos=0;
-      initEnemigo(i);;
+      initEnemigo(i);
     }
   }
 }
-
-void DisparoEnemyCol(){
-  
-  for(int i=0;i<nEnemigos;i++){
-	  switch(disparo.dir){
-		  case 1:
-			if(*(disparo.position)+esat::SpriteWidth(((enemigo+i)->sprite3))*sc > (enemigo+i)->st.x && *(disparo.position+7) < (enemigo+i)->st.x && disparo.y < (enemigo+i)->st.y+esat::SpriteHeight(((enemigo+i)->sprite3))*sc && disparo.y > (enemigo+i)->st.y){
-				(enemigo+i)->dead = true;
-				disparo.e = false;
-			}
-		  
-	  }
-	  
-    /* if(*(disparo.position+7) > (enemigo+i)->st.x+esat::SpriteWidth(((enemigo+i)->sprite3))*sc && *(disparo.position) < (enemigo+i)->st.x && 
-    disparo.y > (enemigo+i)->st.y+esat::SpriteHeight(((enemigo+i)->sprite3))*sc && disparo.y < (enemigo+i)->st.y){
-      (enemigo+i)->dead = true;
-	  disparo.e = false;
-    }*/
-  }
-}
-
-
 void enemigo1(){
 	//meteorito
 	
@@ -1392,6 +1379,7 @@ void niveles(){
   
   
   PlayerEnemyCol();
+  DisparoEnemigoCol();
 }
 
 

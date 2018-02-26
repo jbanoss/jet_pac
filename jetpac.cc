@@ -8,7 +8,7 @@
 #include <time.h>
 
 const int sc=3, wX=256*sc, wY=192*sc;
-int nivel=1,nEnemigos=0,SpawnEnemy=0;
+int nivel=0,nEnemigos=0,SpawnEnemy=0;
 int an=0, animBonus = 0, r; //r de random
 int cont_fuel=1;
 bool Ship_Complete=false;
@@ -49,10 +49,12 @@ struct Disparo{
 }disparo;
 
 struct Tship{
+	int ship_x;
+	int ship_y;
 	esat::SpriteHandle Sprite_Ship;	
 	esat::SpriteTransform ts;
 };
-Tship *Ship=NULL;
+Tship *Ship;
 
 void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
@@ -86,25 +88,21 @@ void InitSprites(){
 
 void Fuel(){
 
-	if(!Ship_Complete){
+	if(Ship_Complete){
 		++cont_fuel%=40;
-		printf("ok" );
+
 		if(cont_fuel==0&&!Respawn_Fuel){
-			printf("peeeee" );
 			Respawn_Fuel=true;
 			(*(Ship+0)).ts.x=rand()%765+2;
 			(*(Ship+0)).ts.y=10;		
 		}
 	}	
 
-	if(Respawn_Fuel&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<173*sc||(*(Ship+0)).ts.x>(173+16)*sc&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<256*sc){
+	if(Respawn_Fuel&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<(256*sc)&&(*(Ship+0)).ts.x<173*sc||(*(Ship+0)).ts.x>(173+16)*sc){
 		esat::DrawSprite((*(Ship+0)).Sprite_Ship,(*(Ship+0)).ts);
 	}
-	if(Respawn_Fuel){
-		
-		if((*(Ship+0)).ts.x<80*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>32*sc&&(*(Ship+0)).ts.y+11*sc<72*sc){
-			(*(Ship+0)).ts.y+=3;
-		}
+	if(Respawn_Fuel){	
+		(*(Ship+0)).ts.y+=3;
 	}
 }
 
@@ -138,7 +136,7 @@ void BuildShip(){
 		(*(Ship+4)).ts.x=(*(Ship+1)).ts.x;
 		grip1=false;
 		grip2=true;
-		if((*(Ship+4)).ts.y<152*sc){
+		if((*(Ship+4)).ts.y<(*(Ship+1)).ts.y-48){
 			(*(Ship+4)).ts.y+=3;
 		}
 	}
@@ -146,11 +144,11 @@ void BuildShip(){
 		
 		(*(Ship+7)).ts.x=(*(Ship+1)).ts.x;
 		grip2=false;
-		if((*(Ship+7)).ts.y<136*sc){
+		if((*(Ship+7)).ts.y<(*(Ship+1)).ts.y-96){
 			(*(Ship+7)).ts.y+=3;
 		}
 	}
-	if((*(Ship+7)).ts.y>=136*sc){
+	if((*(Ship+7)).ts.y==(*(Ship+1)).ts.y-96){
 		Ship_Complete=true;
 	}
 }
@@ -1384,7 +1382,40 @@ void niveles(){
   DisparoEnemigoCol();
 }
 
-
+void SelectLevel(){
+  if(esat::IsKeyDown('0')){
+    nivel=0;
+    nEnemigos=0;
+  }  
+  if(esat::IsKeyDown('1')){
+    nivel=1;
+    nEnemigos=0;
+  }  
+  if(esat::IsKeyDown('2')){
+    nivel=2;
+    nEnemigos=0; 
+  } 
+  if(esat::IsKeyDown('3')){
+    nivel=3;
+    nEnemigos=0;
+  }
+  if(esat::IsKeyDown('4')){
+    nivel=4;
+    nEnemigos=0;
+  }
+  if(esat::IsKeyDown('5')){
+    nivel=5;
+    nEnemigos=0;
+  }
+  if(esat::IsKeyDown('6')){
+    nivel=6;
+    nEnemigos=0;
+  }
+  if(esat::IsKeyDown('7')){
+    nivel=7;
+    nEnemigos=0;
+  }
+}
 
 /*----------------------*/
 
@@ -1498,12 +1529,12 @@ int esat::main(int argc, char **argv) {
     esat::DrawBegin();
     esat::DrawClear(0,0,0);
 	
-     
+      SelectLevel();
       DrawMap();
-     ShipAll();
+      ShipAll();
       PlayerAll();
-	   niveles();
-	//  SpawnBonus();
+      niveles();
+      SpawnBonus();
 	
     esat::DrawEnd();
 	

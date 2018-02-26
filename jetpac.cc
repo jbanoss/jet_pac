@@ -49,12 +49,10 @@ struct Disparo{
 }disparo;
 
 struct Tship{
-	int ship_x;
-	int ship_y;
 	esat::SpriteHandle Sprite_Ship;	
 	esat::SpriteTransform ts;
 };
-Tship *Ship;
+Tship *Ship=NULL;
 
 void InitSprites(){
 	sheet = esat::SpriteFromFile("./recursos/imagenes/sheet.png");
@@ -88,21 +86,25 @@ void InitSprites(){
 
 void Fuel(){
 
-	if(Ship_Complete){
+	if(!Ship_Complete){
 		++cont_fuel%=40;
-
+		printf("ok" );
 		if(cont_fuel==0&&!Respawn_Fuel){
+			printf("peeeee" );
 			Respawn_Fuel=true;
 			(*(Ship+0)).ts.x=rand()%765+2;
 			(*(Ship+0)).ts.y=10;		
 		}
 	}	
 
-	if(Respawn_Fuel&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<(256*sc)&&(*(Ship+0)).ts.x<173*sc||(*(Ship+0)).ts.x>(173+16)*sc){
+	if(Respawn_Fuel&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<173*sc||(*(Ship+0)).ts.x>(173+16)*sc&&(*(Ship+0)).ts.x>0&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)<256*sc){
 		esat::DrawSprite((*(Ship+0)).Sprite_Ship,(*(Ship+0)).ts);
 	}
-	if(Respawn_Fuel){	
-		(*(Ship+0)).ts.y+=3;
+	if(Respawn_Fuel){
+		
+		if((*(Ship+0)).ts.x<80*sc&&(*(Ship+0)).ts.x+(esat::SpriteWidth((*(Ship+0)).Sprite_Ship)*sc)>32*sc&&(*(Ship+0)).ts.y+11*sc<72*sc){
+			(*(Ship+0)).ts.y+=3;
+		}
 	}
 }
 
@@ -136,7 +138,7 @@ void BuildShip(){
 		(*(Ship+4)).ts.x=(*(Ship+1)).ts.x;
 		grip1=false;
 		grip2=true;
-		if((*(Ship+4)).ts.y<(*(Ship+1)).ts.y-48){
+		if((*(Ship+4)).ts.y<152*sc){
 			(*(Ship+4)).ts.y+=3;
 		}
 	}
@@ -144,11 +146,11 @@ void BuildShip(){
 		
 		(*(Ship+7)).ts.x=(*(Ship+1)).ts.x;
 		grip2=false;
-		if((*(Ship+7)).ts.y<(*(Ship+1)).ts.y-96){
+		if((*(Ship+7)).ts.y<136*sc){
 			(*(Ship+7)).ts.y+=3;
 		}
 	}
-	if((*(Ship+7)).ts.y==(*(Ship+1)).ts.y-96){
+	if((*(Ship+7)).ts.y>=136*sc){
 		Ship_Complete=true;
 	}
 }
